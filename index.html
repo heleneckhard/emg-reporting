@@ -11,9 +11,9 @@
 /* ── RESET & TOKENS ───────────────────────────────────────────────────── */
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --brand:#5a0d1c;
-  --brand-light:#f9f0f2;
-  --brand-mid:#8a2030;
+  --brand:#DE2886;
+  --brand-light:#fce8f3;
+  --brand-mid:#C02070;
   --bg:#f7f6f3;
   --paper:#ffffff;
   --border:#e5e2dc;
@@ -273,7 +273,7 @@ td .di{font-size:10.5px;margin-left:4px}
 .bucket-row-desc{font-size:11px;color:var(--muted);font-style:italic;margin-top:.15rem}
 .bucket-row-metrics{display:flex;flex:1}
 .bucket-row-metrics .bm{flex:1;padding:0 14px;border-right:1px solid var(--border)}
-.bucket-row-metrics .bm:first-child{padding-left:0}
+.bucket-row-metrics .bm:first-child{padding-left:14px}
 .bucket-row-metrics .bm:last-child{border-right:none;padding-right:0}
 .bm .k{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
 .bm .v{font-size:1rem;font-weight:600;font-variant-numeric:tabular-nums}
@@ -555,7 +555,7 @@ td .di{font-size:10.5px;margin-left:4px}
   .bucket-row-desc{font-size:7.5pt!important}
   .bucket-row-metrics{display:flex!important;flex:1!important}
   .bucket-row-metrics .bm{flex:1!important;padding:0 6pt!important;border-right:.5pt solid #e5e2dc!important}
-  .bucket-row-metrics .bm:first-child{padding-left:0!important}
+  .bucket-row-metrics .bm:first-child{padding-left:6pt!important}
   .bucket-row-metrics .bm:last-child{border-right:none!important;padding-right:0!important}
   .bm .k{font-size:6.5pt!important;margin-bottom:1pt!important}
   .bm .v{font-size:9.5pt!important;font-weight:600!important}
@@ -869,10 +869,16 @@ function initClients() {
   el('upload-screen').style.display = 'none';
   el('report-screen').style.display = 'block';
 }
-el('client-select').addEventListener('change', function() { switchClient(+this.value); });
+el('client-select').addEventListener('change', function() {
+  var idx = +this.value;
+  if (!isNaN(idx) && clients[idx]) switchClient(idx);
+});
 function switchClient(idx) {
+  if (!clients.length) return;
+  idx = Math.max(0, Math.min(idx, clients.length - 1));
   var c = clients[idx];
-  R.style.setProperty('--brand', c.fm.brand_color || '#5a0d1c');
+  el('client-select').value = idx;
+  R.style.setProperty('--brand', c.fm.brand_color || '#DE2886');
   el('hdr-period').textContent = c.fm.month || '';
   renderSlides(c.slides, c.locSlides);
 }
@@ -1168,15 +1174,13 @@ function buildLocSlide(locSlides, container, slideId) {
     togBtn.style.marginTop='.65rem';
     var insightsWrap=ce('div'); insightsWrap.className='loc-insights-wrap';
     insightsWrap.style.cssText='display:none;margin-top:.65rem;padding-top:.65rem;border-top:1px solid var(--border)';
-    var insightsSec=ce('div'); insightsSec.className='comment-section';
-    ['Summary','Moving Forward'].forEach(function(title){
-      var blk=ce('div'); blk.className='comment-block';
-      var t=ce('div'); t.className='comment-block-title'; t.textContent=title;
-      var ul=ce('ul'); ul.className='comment-list'; ul.contentEditable='true'; ul.spellcheck=false;
-      var li=ce('li'); ul.appendChild(li);
-      blk.appendChild(t); blk.appendChild(ul);
-      insightsSec.appendChild(blk);
-    });
+    var insightsSec=ce('div');
+    var blk=ce('div'); blk.className='comment-block';
+    var t=ce('div'); t.className='comment-block-title'; t.textContent='Insights';
+    var ul=ce('ul'); ul.className='comment-list'; ul.contentEditable='true'; ul.spellcheck=false;
+    var li=ce('li'); ul.appendChild(li);
+    blk.appendChild(t); blk.appendChild(ul);
+    insightsSec.appendChild(blk);
     insightsWrap.appendChild(insightsSec);
     togBtn.addEventListener('click',function(){
       var open=insightsWrap.style.display!=='none';
