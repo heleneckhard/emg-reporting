@@ -21,7 +21,7 @@
   --up:#166534;
   --dn:#6b7280;
   --radius:8px;
-  --fs:13.5px;
+  --fs:15px;
   --font-display:'DM Serif Display',Georgia,serif;
   --font-body:'DM Sans',system-ui,sans-serif;
 }
@@ -62,6 +62,45 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-si
 #dz-label span{color:var(--brand);cursor:pointer;font-weight:500}
 #dz-label span:hover{text-decoration:underline}
 .dz-hint{font-size:11px;color:var(--muted);opacity:.6;margin-top:.35rem}
+/* ── REPORT SELECTOR ──────────────────────────────────────────────────── */
+#report-selector{
+  width:100%;max-width:480px;
+  background:var(--paper);border:1.5px solid var(--border);
+  border-radius:12px;padding:1.5rem 2rem 1.25rem;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.sel-label{font-size:13px;color:var(--muted);margin-bottom:.85rem;font-weight:300}
+.sel-row{display:flex;gap:.75rem;margin-bottom:.85rem}
+.sel-row select{
+  flex:1;font-family:var(--font-body);font-size:13px;font-weight:500;
+  color:var(--text);border:1px solid var(--border);border-radius:6px;
+  padding:6px 10px;background:var(--bg);outline:none;cursor:pointer;
+  min-width:0;
+}
+.sel-row select:focus{border-color:var(--brand)}
+.sel-load{
+  width:100%;font-family:var(--font-body);font-size:13px;font-weight:500;
+  background:var(--brand);color:#fff;border:none;border-radius:6px;
+  padding:9px 0;cursor:pointer;transition:background .15s;
+}
+.sel-load:hover{background:var(--brand-mid)}
+.sel-load:disabled{opacity:.45;cursor:default}
+.sel-divider{
+  font-size:11px;color:var(--muted);text-align:center;
+  margin:.85rem 0 0;opacity:.55;
+  display:flex;align-items:center;gap:.65rem;
+}
+.sel-divider::before,.sel-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.drive-link-wrap{margin-top:.25rem}
+#drive-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:500;color:var(--muted);
+  text-decoration:none;padding:5px 12px;
+  border:1px solid var(--border);border-radius:20px;
+  background:var(--paper);transition:all .15s;
+}
+#drive-link:hover{border-color:var(--brand);color:var(--brand)}
 
 /* ── TOOLBAR ──────────────────────────────────────────────────────────── */
 #toolbar{
@@ -130,6 +169,11 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-si
   padding:.4rem .85rem;margin-bottom:.4rem;
   display:flex;flex-wrap:wrap;align-items:center;gap:5px;
 }
+.tpanel-inline{
+  background:transparent;border:none;border-radius:0;
+  padding:.35rem 0 .5rem;margin-bottom:.5rem;
+  border-bottom:1px solid var(--border);
+}
 .tp-lbl{font-size:10.5px;color:var(--muted);margin-right:4px;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
 .tog{
   font-size:11px;padding:2px 9px;border-radius:20px;
@@ -146,7 +190,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-si
   box-shadow:0 1px 4px rgba(0,0,0,.04);
 }
 .section-title{
-  font-size:10px;font-weight:600;color:var(--muted);
+  font-size:11px;font-weight:600;color:var(--muted);
   text-transform:uppercase;letter-spacing:.1em;
   margin-bottom:1rem;padding-bottom:.6rem;
   border-bottom:1px solid var(--border);
@@ -165,21 +209,21 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-si
   background:var(--brand);opacity:.15;
 }
 .metric-card .lbl{
-  font-size:10px;color:var(--muted);margin-bottom:.3rem;
+  font-size:11px;color:var(--muted);margin-bottom:.3rem;
   text-transform:uppercase;letter-spacing:.07em;font-weight:500;
 }
-.metric-card .val{font-size:1.6rem;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.metric-card .val{font-size:1.25rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .metric-card .dlt{font-size:11px;margin-top:.3rem}
 .up{color:var(--up)}
 .dn{color:var(--dn)}
 
 /* ── TABLES ───────────────────────────────────────────────────────────── */
 .tbl-wrap{overflow-x:auto;margin-top:.5rem}
-table{width:100%;border-collapse:collapse;font-size:12.5px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
 thead tr{border-bottom:1.5px solid var(--border)}
 th{
   text-align:left;padding:6px 8px;
-  font-size:10px;font-weight:600;color:var(--muted);
+  font-size:11px;font-weight:600;color:var(--muted);
   text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;
 }
 td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text)}
@@ -196,17 +240,18 @@ td .di{font-size:10.5px;margin-left:4px}
 .hc6 th:nth-child(6),.hc6 td:nth-child(6){display:none}
 .hc7 th:nth-child(7),.hc7 td:nth-child(7){display:none}
 
-/* ── KEYWORD BUCKETS ──────────────────────────────────────────────────── */
-.bucket-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
-.bucket{
-  border:1px solid var(--border);border-radius:var(--radius);
-  padding:.9rem 1.1rem;background:var(--bg);
-}
-.bucket-name{font-size:12.5px;font-weight:600;margin-bottom:.15rem;color:var(--text)}
-.bucket-desc{font-size:11px;color:var(--muted);margin-bottom:.65rem;font-style:italic}
-.bmet{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.bm .k{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
-.bm .v{font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums}
+/* ── BUCKET ROWS ──────────────────────────────────────────────────────── */
+.bucket-row{display:flex;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid var(--border)}
+.bucket-row:last-child{border-bottom:none}
+.bucket-row-left{width:165px;flex-shrink:0;padding-top:.1rem}
+.bucket-row-name{font-size:12.5px;font-weight:600;color:var(--brand)}
+.bucket-row-desc{font-size:11px;color:var(--muted);font-style:italic;margin-top:.15rem}
+.bucket-row-metrics{display:flex;flex:1}
+.bucket-row-metrics .bm{flex:1;padding:0 14px;border-right:1px solid var(--border)}
+.bucket-row-metrics .bm:first-child{padding-left:0}
+.bucket-row-metrics .bm:last-child{border-right:none;padding-right:0}
+.bm .k{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+.bm .v{font-size:1rem;font-weight:600;font-variant-numeric:tabular-nums}
 .bm .d{font-size:10.5px}
 
 /* ── LOCATION ROWS ────────────────────────────────────────────────────── */
@@ -217,7 +262,7 @@ td .di{font-size:10.5px;margin-left:4px}
 .loc-m{flex:1;padding:0 14px;border-right:1px solid var(--border)}
 .loc-m:first-child{padding-left:0}
 .loc-m:last-child{border-right:none;padding-right:0}
-.loc-m .k{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+.loc-m .k{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
 .loc-m .v{font-size:1rem;font-weight:600;font-variant-numeric:tabular-nums}
 .loc-m .d{font-size:10.5px}
 
@@ -227,8 +272,27 @@ td .di{font-size:10.5px;margin-left:4px}
   background:var(--bg);border-radius:6px;padding:.65rem .85rem;
   border:1px solid var(--border);
 }
-.ai-item .src{font-size:10px;color:var(--muted);margin-bottom:.2rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.ai-item .src{font-size:11px;color:var(--muted);margin-bottom:.2rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
 .ai-item .cnt{font-size:1.1rem;font-weight:600;font-variant-numeric:tabular-nums}
+
+/* ── COMMENT SECTIONS ─────────────────────────────────────────────────── */
+.comment-section{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.comment-block{
+  background:var(--paper);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1rem 1.25rem;
+}
+.comment-block-title{
+  font-size:10px;font-weight:600;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:.65rem;padding-bottom:.5rem;
+  border-bottom:1px solid var(--border);
+}
+.comment-list{
+  list-style:disc;padding-left:1.25rem;
+  outline:none;min-height:2.5rem;
+}
+.comment-list li{font-size:var(--fs);color:var(--text);line-height:1.6;min-height:1.2em}
+.comment-list li:only-child:empty::before{content:'Add notes…';color:var(--muted);opacity:.45;pointer-events:none}
 
 /* ── EDITABLE ─────────────────────────────────────────────────────────── */
 [contenteditable=true]{outline:none;border-radius:3px;cursor:text;transition:background .1s}
@@ -246,7 +310,7 @@ td .di{font-size:10.5px;margin-left:4px}
   /* ── PAGE SETUP ── */
   @page{
     size:8.5in 11in portrait;
-    margin:.55in .75in .55in .75in;
+    margin:.55in .9in .55in .75in;
   }
 
   /* force background colours / images */
@@ -258,9 +322,9 @@ td .di{font-size:10.5px;margin-left:4px}
   /* ── HIDE SCREEN-ONLY UI ── */
   #upload-screen,
   #toolbar,
-  #format-bar,
   .tabs,
   .tpanel,
+  .tpanel-inline,
   #reload-btn,
   #export-btn{ display:none!important }
 
@@ -269,7 +333,7 @@ td .di{font-size:10.5px;margin-left:4px}
     background:#fff!important;
     color:#1c1917!important;
     font-family:'DM Sans',system-ui,sans-serif!important;
-    font-size:8.5pt!important;
+    font-size:9.5pt!important;
     line-height:1.45!important;
     margin:0!important;
     padding:0!important;
@@ -293,7 +357,7 @@ td .di{font-size:10.5px;margin-left:4px}
   #cover-page{
     display:block!important;
     position:relative;
-    margin:-.55in -.75in -.55in -.75in;   /* bleed to page edge */
+    margin:-.55in -.9in -.55in -.75in;   /* bleed to page edge */
     width:8.5in;
     height:11in;
     overflow:hidden;
@@ -389,7 +453,7 @@ td .di{font-size:10.5px;margin-left:4px}
     page-break-inside:avoid;
   }
   .section-title{
-    font-size:6.5pt!important;
+    font-size:7.5pt!important;
     font-weight:600!important;
     color:#78716c!important;
     text-transform:uppercase!important;
@@ -418,23 +482,23 @@ td .di{font-size:10.5px;margin-left:4px}
   }
   .metric-card::before{ display:none!important }
   .metric-card .lbl{
-    font-size:6pt!important;
+    font-size:7pt!important;
     letter-spacing:.07em!important;
     margin-bottom:2pt!important;
   }
-  .metric-card .val{ font-size:16pt!important;letter-spacing:-.02em!important }
-  .metric-card .dlt{ font-size:7pt!important;margin-top:2pt!important }
+  .metric-card .val{ font-size:12pt!important;letter-spacing:-.02em!important }
+  .metric-card .dlt{ font-size:8pt!important;margin-top:2pt!important }
 
   /* ── TABLES ──────────────────────────────────────────────────────── */
   .tbl-wrap{ overflow:visible!important }
   table{
     width:100%!important;
-    font-size:7.5pt!important;
+    font-size:8.5pt!important;
     border-collapse:collapse!important;
   }
   thead tr{ border-bottom:1.5pt solid #e5e2dc!important }
   th{
-    font-size:6pt!important;
+    font-size:7pt!important;
     font-weight:600!important;
     padding:4pt 5pt!important;
     color:#78716c!important;
@@ -451,25 +515,19 @@ td .di{font-size:10.5px;margin-left:4px}
   tr:hover td{ background:transparent!important }
   td .di{ font-size:6.5pt!important }
 
-  /* ── KEYWORD BUCKETS ─────────────────────────────────────────────── */
-  .bucket-grid{
-    display:grid!important;
-    grid-template-columns:repeat(3,1fr)!important;
-    gap:5pt!important;
-  }
-  .bucket{
-    background:#f7f6f3!important;
-    border:1pt solid #e5e2dc!important;
-    border-radius:3pt!important;
-    padding:7pt 8pt!important;
-    break-inside:avoid;
-  }
-  .bucket-name{ font-size:7.5pt!important;font-weight:600!important;margin-bottom:1pt!important }
-  .bucket-desc{ font-size:6.5pt!important;margin-bottom:5pt!important }
-  .bmet{ display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:4pt!important }
-  .bm .k{ font-size:6pt!important }
-  .bm .v{ font-size:9pt!important;font-weight:600!important }
-  .bm .d{ font-size:6.5pt!important }
+  /* ── BUCKET ROWS ─────────────────────────────────────────────────── */
+  .bucket-row{display:flex!important;align-items:flex-start!important;padding:5pt 0!important;border-bottom:.5pt solid #e5e2dc!important;break-inside:avoid}
+  .bucket-row:last-child{border-bottom:none!important}
+  .bucket-row-left{width:120pt!important;flex-shrink:0!important}
+  .bucket-row-name{font-size:9pt!important;font-weight:600!important;color:var(--brand)!important}
+  .bucket-row-desc{font-size:7.5pt!important}
+  .bucket-row-metrics{display:flex!important;flex:1!important}
+  .bucket-row-metrics .bm{flex:1!important;padding:0 6pt!important;border-right:.5pt solid #e5e2dc!important}
+  .bucket-row-metrics .bm:first-child{padding-left:0!important}
+  .bucket-row-metrics .bm:last-child{border-right:none!important;padding-right:0!important}
+  .bm .k{font-size:6.5pt!important;margin-bottom:1pt!important}
+  .bm .v{font-size:9.5pt!important;font-weight:600!important}
+  .bm .d{font-size:7.5pt!important}
 
   /* ── LOCATION ROWS ───────────────────────────────────────────────── */
   .loc-row{
@@ -491,9 +549,9 @@ td .di{font-size:10.5px;margin-left:4px}
   .loc-m{ flex:1!important;padding:0 8pt!important;border-right:.5pt solid #e5e2dc!important }
   .loc-m:first-child{ padding-left:0!important }
   .loc-m:last-child{ border-right:none!important;padding-right:0!important }
-  .loc-m .k{ font-size:5.5pt!important;margin-bottom:1pt!important }
-  .loc-m .v{ font-size:8.5pt!important;font-weight:600!important }
-  .loc-m .d{ font-size:6.5pt!important }
+  .loc-m .k{ font-size:6.5pt!important;margin-bottom:1pt!important }
+  .loc-m .v{ font-size:9.5pt!important;font-weight:600!important }
+  .loc-m .d{ font-size:7.5pt!important }
 
   /* ── AI REFERRAL GRID ────────────────────────────────────────────── */
   .ai-grid{
@@ -507,8 +565,20 @@ td .di{font-size:10.5px;margin-left:4px}
     border-radius:3pt!important;
     padding:6pt 7pt!important;
   }
-  .ai-item .src{ font-size:6pt!important;margin-bottom:2pt!important }
-  .ai-item .cnt{ font-size:11pt!important;font-weight:600!important }
+  .ai-item .src{ font-size:7pt!important;margin-bottom:2pt!important }
+  .ai-item .cnt{ font-size:12pt!important;font-weight:600!important }
+
+  /* ── COMMENT SECTIONS ────────────────────────────────────────────── */
+  .comment-section{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8pt!important;margin-top:10pt!important;break-inside:avoid}
+  .comment-block{background:#fff!important;border:1pt solid #e5e2dc!important;border-radius:3pt!important;padding:7pt 9pt!important;break-inside:avoid}
+  .comment-block-title{font-size:7.5pt!important;margin-bottom:4pt!important;padding-bottom:3pt!important}
+  .comment-list{padding-left:10pt!important;min-height:0!important}
+  .comment-list li{font-size:9pt!important;line-height:1.45!important;min-height:0!important}
+  .comment-list li:only-child:empty::before{content:none!important}
+
+  /* ── COVER LOGO ──────────────────────────────────────────────────── */
+  .cover-logo-wrap{position:absolute;top:.7in;right:.75in;max-width:1.8in;max-height:.55in;display:block!important}
+  .cover-logo-wrap img{max-width:100%;max-height:100%;object-fit:contain;display:block}
 
 }
 </style>
@@ -520,12 +590,30 @@ td .di{font-size:10.5px;margin-left:4px}
   <div id="upload-screen">
     <div class="upload-logo">Elysium Marketing Group</div>
     <h1>Monthly<br><em>Report Dashboard</em></h1>
-    <p>Drop one or more <code>*_SEO_Report_*.md</code> files to build the report.</p>
+    <p>Select a saved report or drop files directly.</p>
+
+    <!-- Folder-based selector — shown when reports/manifest.json is found -->
+    <div id="report-selector" style="display:none">
+      <p class="sel-label">Select a report period and client</p>
+      <div class="sel-row">
+        <select id="month-select-upload"></select>
+        <select id="client-select-upload"></select>
+      </div>
+      <button class="sel-load" id="load-report-btn">Load Report</button>
+      <div class="sel-divider">or drop files directly</div>
+    </div>
+
     <div id="drop-zone">
       <div class="dz-icon">📂</div>
       <input type="file" id="file-input" accept=".md,.txt" multiple>
       <div id="dz-label">Drop files here or <span id="browse-btn">browse</span></div>
       <div class="dz-hint">Accepts .md or .txt — multiple clients supported</div>
+    </div>
+    <div class="drive-link-wrap">
+      <a id="drive-link" href="PASTE_GOOGLE_DRIVE_FOLDER_URL_HERE" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 87.3 78" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L28 53H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066DA"/><path d="M43.65 25L29.35 0c-1.35.8-2.5 1.9-3.3 3.3L1.2 48.5A9 9 0 000 53h28z" fill="#00AC47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75L86.1 57.5c.8-1.4 1.2-2.95 1.2-4.5H59.3l5.9 11.5z" fill="#EA4335"/><path d="M43.65 25L57.95 0H29.35z" fill="#00832D"/><path d="M59.3 53H87.3L73 28.5 57.95 0 43.65 25 59.3 53z" fill="#2684FC"/><path d="M13.8 76.8c1.35.8 2.9 1.2 4.5 1.2h50.7c1.6 0 3.15-.45 4.5-1.2L59.3 53H28z" fill="#FFBA00"/></svg>
+        Open source files folder
+      </a>
     </div>
   </div>
 
@@ -538,9 +626,6 @@ td .di{font-size:10.5px;margin-left:4px}
       <select id="client-select"></select>
       <span class="tb-period" id="hdr-period"></span>
       <div class="tb-sep"></div>
-      <div id="format-bar" style="border:none;background:transparent;padding:0;margin:0;box-shadow:none">
-        <div class="fb-group"><span>Size</span><input type="range" id="sl-fs" min="11" max="20" value="13"><span class="fb-val" id="v-fs">13px</span></div>
-      </div>
       <button class="tb-btn" id="reload-btn">New file</button>
       <button class="tb-btn primary" id="export-btn">⬇ Print / Save PDF</button>
     </div>
@@ -550,6 +635,7 @@ td .di{font-size:10.5px;margin-left:4px}
       <div id="cover-page">
         <div class="cover-accent"></div>
         <div class="cover-sidebar"></div>
+        <div class="cover-logo-wrap"><img id="cover-logo-img" src="" alt="" onerror="this.style.display='none'"></div>
         <div class="cover-inner">
           <div class="cover-eyebrow">Elysium Marketing Group · Monthly Performance Report</div>
           <div class="cover-title" id="cover-title">Client<br><em>Report</em></div>
@@ -584,12 +670,6 @@ function escRe(s) { return (s || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 var _id = 0;
 function uid() { _id++; return 'x' + _id; }
 
-// ── FORMAT SLIDER ────────────────────────────────────────────────────────
-el('sl-fs').addEventListener('input', function () {
-  R.style.setProperty('--fs', this.value + 'px');
-  el('v-fs').textContent = this.value + 'px';
-});
-
 // ── EXPORT ───────────────────────────────────────────────────────────────
 el('export-btn').addEventListener('click', function () {
   var c = clients[+el('client-select').value];
@@ -600,6 +680,10 @@ el('export-btn').addEventListener('click', function () {
     el('cover-subtitle').textContent = 'Digital Marketing Performance Overview';
     el('cover-period').textContent = period || '—';
     el('cover-client').textContent = clientName;
+    var logoImg = el('cover-logo-img');
+    var logoSlug = clientName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    logoImg.style.display = '';
+    logoImg.src = 'logos/' + logoSlug + '.png';
   }
   window.print();
 });
@@ -734,7 +818,7 @@ function switchClient(idx) {
 function makeEditable(container) {
   var sels = ['.metric-card .val','.metric-card .dlt','.metric-card .lbl',
     '.bm .v','.bm .d','.bm .k','.loc-m .v','.loc-m .d','.loc-m .k',
-    '.loc-name','.section-title','.ai-item .cnt','.ai-item .src'];
+    '.loc-name','.bucket-row-name','.section-title','.ai-item .cnt','.ai-item .src'];
   sels.forEach(function(s) {
     container.querySelectorAll(s).forEach(function(e){ e.contentEditable='true'; e.spellcheck=false; });
   });
@@ -792,10 +876,10 @@ function buildSEOSlide(block, container) {
   var ga4t = ga4raw ? parseTbl(ga4raw) : {headers:[],rows:[]};
   var gsct = gscraw ? parseTbl(gscraw) : {headers:[],rows:[]};
 
+  // Metric cards (AI Referral Sessions moves to AI Visibility section)
   var SNAP = [
     {label:'Sessions',tbl:ga4t,row:'Sessions'},
     {label:'Impressions',tbl:gsct,row:'Impressions'},
-    {label:'AI Referral Sessions',tbl:ga4t,row:'AI Referral Sessions'},
     {label:'Form Submissions',tbl:ga4t,row:'Form Submissions'}
   ];
   var snapCards = [];
@@ -806,73 +890,99 @@ function buildSEOSlide(block, container) {
     var dlt=(r[3]&&r[3]!=='—')?'<div class="dlt '+cls+'">'+r[3]+' M/M</div>':'';
     snapCards.push({id:cid,label:w.label,html:'<div class="metric-card" id="'+cid+'"><div class="lbl">'+w.label+'</div><div class="val">'+r[1]+'</div>'+dlt+'</div>'});
   });
-  if (snapCards.length) {
-    var gh='<div class="metric-grid">'+snapCards.map(function(c){return c.html;}).join('')+'</div>';
+
+  // Keyword bucket rows (live inside snapshot section)
+  var bkts = extractH4(block).filter(function(b){return b.table.rows.length && b.name !== 'AI Referral Sources';});
+  var bktMeta = bkts.map(function(b) {
+    var mids = b.table.rows.map(function(row){
+      var mid=uid(), dcls=dclass(row[3],row[0]);
+      var dhtml=(row[3]&&row[3]!=='—')?'<div class="d '+dcls+'">'+row[3]+'</div>':'';
+      var key=row[0].toLowerCase().replace(/\s+/g,'_');
+      return {id:mid,label:row[0],key:key,html:'<div class="bm" id="'+mid+'" data-bmet="'+key+'"><div class="k">'+row[0]+'</div><div class="v">'+row[1]+'</div>'+dhtml+'</div>'};
+    });
+    return {b:b,mids:mids};
+  });
+
+  if (snapCards.length || bktMeta.length) {
+    var gh=snapCards.length?'<div class="metric-grid">'+snapCards.map(function(c){return c.html;}).join('')+'</div>':'';
     var snap=makeSection('',gh);
-    container.appendChild(makePanel(snapCards.map(function(c){
-      return {label:c.label,hide:function(h){var e=document.getElementById(c.id);if(e)e.style.display=h?'none':'';}};
-    }),'Metrics'));
+
+    if (snapCards.length) {
+      var metricsPanel=makePanel(snapCards.map(function(c){
+        return {label:c.label,hide:function(h){var e=document.getElementById(c.id);if(e)e.style.display=h?'none':'';}};
+      }),'Metrics');
+      metricsPanel.classList.add('tpanel-inline');
+      snap.el.querySelector('.section-title').insertAdjacentElement('afterend',metricsPanel);
+    }
+
+    if (bktMeta.length) {
+      var BKT_METRICS=['Clicks','Impressions','CTR','Avg Position'];
+      var bktMetPanel=makePanel(BKT_METRICS.map(function(label){
+        var key=label.toLowerCase().replace(/\s+/g,'_');
+        return {label:label,hide:function(h){
+          snap.el.querySelectorAll('[data-bmet="'+key+'"]').forEach(function(e){e.style.display=h?'none':'';});
+        }};
+      }),'Bucket Metrics');
+      bktMetPanel.classList.add('tpanel-inline');
+      var mgrid=snap.el.querySelector('.metric-grid');
+      if (mgrid) mgrid.insertAdjacentElement('beforebegin',bktMetPanel);
+      else snap.el.querySelector('.section-title').insertAdjacentElement('afterend',bktMetPanel);
+
+      bktMeta.forEach(function(meta,i) {
+        var rowEl=ce('div'); rowEl.className='bucket-row'; rowEl.id='bkt-row-'+snap.id+'-'+i;
+        var leftDiv=ce('div'); leftDiv.className='bucket-row-left';
+        leftDiv.innerHTML='<div class="bucket-row-name">'+meta.b.name+'</div>'+(meta.b.desc?'<div class="bucket-row-desc">'+meta.b.desc+'</div>':'');
+        var metsDiv=ce('div'); metsDiv.className='bucket-row-metrics';
+        meta.mids.forEach(function(m){ metsDiv.innerHTML+=m.html; });
+        rowEl.appendChild(leftDiv);
+        rowEl.appendChild(metsDiv);
+        snap.el.appendChild(rowEl);
+      });
+    }
+
     container.appendChild(snap.el);
     secItems.push({id:snap.id,label:'Snapshot'});
   }
 
-  if (ga4raw) {
-    var aiM = ga4raw.match(/####\s*AI Referral Sources\s*\n([\s\S]*?)(?=\n###|\n##|$)/);
-    if (aiM) {
-      var at = parseTbl(aiM[1]);
-      if (at.rows.length) {
-        var ah='<div class="ai-grid">'+at.rows.map(function(row){
-          var src=row[0]||'',cnt=row[1]||'';
-          if (!src||!cnt) return '';
-          return '<div class="ai-item"><div class="src">'+src+'</div><div class="cnt">'+cnt+'</div></div>';
-        }).join('')+'</div>';
-        var ais=makeSection('AI referral sources',ah);
-        container.appendChild(ais.el);
-        secItems.push({id:ais.id,label:'AI sources'});
-      }
+  // AI Visibility: AI Referral Sessions card + AI Referral Sources grid
+  // Search the full slide block — the #### heading may not be nested under ### GA4 Organic Traffic
+  var aiM=block.match(/####\s*AI Referral Sources\s*\n([\s\S]*?)(?=\n####|\n###|\n##|$)/);
+  var aiSessRow=findRow(ga4t,'AI Referral Sessions');
+  if (!aiSessRow&&aiM) {
+    // Fallback: some reports list the total as the first row of the sources table
+    aiSessRow=findRow(parseTbl(aiM[1]),'AI Referral Sessions');
+  }
+  var aiSessHtml='';
+  if (aiSessRow&&aiSessRow[1]) {
+    var acid=uid(), acls=dclass(aiSessRow[3],'AI Referral Sessions');
+    var adlt=(aiSessRow[3]&&aiSessRow[3]!=='—')?'<div class="dlt '+acls+'">'+aiSessRow[3]+' M/M</div>':'';
+    aiSessHtml='<div class="metric-grid" style="margin-bottom:.75rem"><div class="metric-card" id="'+acid+'"><div class="lbl">AI Referral Sessions</div><div class="val">'+aiSessRow[1]+'</div>'+adlt+'</div></div>';
+  }
+  var aiGridHtml='';
+  if (aiM) {
+    var at=parseTbl(aiM[1]);
+    var atRows=at.rows.filter(function(r){return r[0]&&r[0].trim().toLowerCase()!=='ai referral sessions';});
+    if (atRows.length) {
+      aiGridHtml='<div class="ai-grid">'+atRows.map(function(row){
+        var src=row[0]||'',cnt=row[1]||'';
+        if (!src||!cnt) return '';
+        return '<div class="ai-item"><div class="src">'+src+'</div><div class="cnt">'+cnt+'</div></div>';
+      }).join('')+'</div>';
     }
   }
-
-  var bkts = extractH4(block).filter(function(b){return b.table.rows.length;});
-  if (bkts.length) {
-    var bSecId=uid(), gridId='bg'+bSecId;
-    container.appendChild(makePanel(bkts.map(function(b,idx){
-      return {label:b.name,hide:function(h){var e=document.getElementById('bkt'+bSecId+idx);if(e)e.style.display=h?'none':'';}};
-    }),'Buckets'));
-
-    var bktMeta = bkts.map(function(b) {
-      var mids = b.table.rows.map(function(row){
-        var mid=uid(), dcls=dclass(row[3],row[0]);
-        var dhtml=(row[3]&&row[3]!=='—')?'<div class="d '+dcls+'">'+row[3]+'</div>':'';
-        return {id:mid,label:row[0],html:'<div class="bm" id="'+mid+'"><div class="k">'+row[0]+'</div><div class="v">'+row[1]+'</div>'+dhtml+'</div>'};
-      });
-      return {b:b,mids:mids};
-    });
-
-    bktMeta.forEach(function(meta) {
-      container.appendChild(makePanel(meta.mids.map(function(m){
-        return {label:m.label,hide:function(h){var e=document.getElementById(m.id);if(e)e.style.display=h?'none':'';}};
-      }),meta.b.name));
-    });
-
-    var bSecEl=ce('div'); bSecEl.className='section'; bSecEl.id=bSecId;
-    bSecEl.innerHTML='<div class="section-title">Keyword buckets</div><div class="bucket-grid" id="'+gridId+'"></div>';
-    container.appendChild(bSecEl);
-    var grid=bSecEl.querySelector('#'+gridId);
-    bktMeta.forEach(function(meta,i) {
-      var card=ce('div'); card.className='bucket'; card.id='bkt'+bSecId+i;
-      card.innerHTML='<div class="bucket-name">'+meta.b.name+'</div>'+(meta.b.desc?'<div class="bucket-desc">'+meta.b.desc+'</div>':'')+
-        '<div class="bmet">'+meta.mids.map(function(m){return m.html;}).join('')+'</div>';
-      grid.appendChild(card);
-    });
-    secItems.push({id:bSecId,label:'Keyword buckets'});
+  if (aiSessHtml||aiGridHtml) {
+    var ais=makeSection('AI Visibility',aiSessHtml+aiGridHtml);
+    container.appendChild(ais.el);
+    secItems.push({id:ais.id,label:'AI Visibility'});
   }
 
   var tqraw=extractSec(block,'Top Queries');
   if (tqraw) {
     var tq=parseTbl(tqraw), tqb=buildTable(tq,[1,2,3,4],true);
     var tqs=makeSection('Top queries',tqb.html);
-    container.appendChild(colPanel(tqb.id,tqb.headers,true));
+    var tqColPanel=colPanel(tqb.id,tqb.headers,true);
+    tqColPanel.classList.add('tpanel-inline');
+    tqs.el.querySelector('.section-title').insertAdjacentElement('afterend',tqColPanel);
     container.appendChild(tqs.el);
     secItems.push({id:tqs.id,label:'Top queries'});
   }
@@ -880,7 +990,9 @@ function buildSEOSlide(block, container) {
   if (tpraw) {
     var tp=parseTbl(tpraw), tpb=buildTable(tp,[1,2],true);
     var tps=makeSection('Top pages',tpb.html);
-    container.appendChild(colPanel(tpb.id,tpb.headers,true));
+    var tpColPanel=colPanel(tpb.id,tpb.headers,true);
+    tpColPanel.classList.add('tpanel-inline');
+    tps.el.querySelector('.section-title').insertAdjacentElement('afterend',tpColPanel);
     container.appendChild(tps.el);
     secItems.push({id:tps.id,label:'Top pages'});
   }
@@ -918,7 +1030,7 @@ function buildLocSlide(locSlides, container) {
 }
 
 // ── PAID SLIDE ────────────────────────────────────────────────────────────
-function buildPaidSlide(block, container) {
+function buildPaidSlide(block, container, kwBlock) {
   var secItems=[];
   var acctraw=extractSec(block,'Account Performance');
   if (acctraw) {
@@ -930,18 +1042,33 @@ function buildPaidSlide(block, container) {
     });
     var gh='<div class="metric-grid">'+cards.map(function(c){return c.html;}).join('')+'</div>';
     var as=makeSection('Account performance',gh);
-    container.appendChild(makePanel(cards.map(function(c){
+    var aMetPanel=makePanel(cards.map(function(c){
       return {label:c.label,hide:function(h){var e=document.getElementById(c.id);if(e)e.style.display=h?'none':'';}};
-    }),'Metrics'));
+    }),'Metrics');
+    aMetPanel.classList.add('tpanel-inline');
+    as.el.querySelector('.section-title').insertAdjacentElement('afterend',aMetPanel);
     container.appendChild(as.el);
     secItems.push({id:as.id,label:'Account'});
+  }
+  if (kwBlock) {
+    var kwt=parseTbl(kwBlock);
+    if (kwt.rows.length) {
+      var kwb=buildTable(kwt,[1,2,3,4,5],true), kws=makeSection('Paid keywords',kwb.html);
+      var kwColPanel=colPanel(kwb.id,kwb.headers,true);
+      kwColPanel.classList.add('tpanel-inline');
+      kws.el.querySelector('.section-title').insertAdjacentElement('afterend',kwColPanel);
+      container.appendChild(kws.el);
+      secItems.push({id:kws.id,label:'Keywords'});
+    }
   }
   var campraw=extractSec(block,'Campaigns');
   if (campraw) {
     var ct=parseTbl(campraw);
     if (ct.rows.length) {
       var cb=buildTable(ct,[1,2,3],false), cs=makeSection('Campaigns',cb.html);
-      container.appendChild(colPanel(cb.id,cb.headers,false));
+      var campColPanel=colPanel(cb.id,cb.headers,false);
+      campColPanel.classList.add('tpanel-inline');
+      cs.el.querySelector('.section-title').insertAdjacentElement('afterend',campColPanel);
       container.appendChild(cs.el);
       secItems.push({id:cs.id,label:'Campaigns'});
     }
@@ -953,13 +1080,18 @@ function buildPaidSlide(block, container) {
   }
 }
 
-// ── PAID KW SLIDE ─────────────────────────────────────────────────────────
-function buildPaidKwSlide(block, container) {
-  var t=parseTbl(block);
-  if (!t.rows.length) return;
-  var b=buildTable(t,[1,2,3,4,5],true), s=makeSection('Paid keywords',b.html);
-  container.appendChild(colPanel(b.id,b.headers,true));
-  container.appendChild(s.el);
+// ── COMMENT SECTIONS ──────────────────────────────────────────────────────
+function buildCommentSection(container) {
+  var wrap = ce('div'); wrap.className = 'comment-section';
+  ['Summary','Moving Forward'].forEach(function(title) {
+    var block = ce('div'); block.className = 'comment-block';
+    var t = ce('div'); t.className = 'comment-block-title'; t.textContent = title;
+    var ul = ce('ul'); ul.className = 'comment-list'; ul.contentEditable = 'true'; ul.spellcheck = false;
+    var li = ce('li'); ul.appendChild(li);
+    block.appendChild(t); block.appendChild(ul);
+    wrap.appendChild(block);
+  });
+  container.appendChild(wrap);
 }
 
 // ── RENDER SLIDES ─────────────────────────────────────────────────────────
@@ -970,8 +1102,7 @@ function renderSlides(slides, locSlides) {
   var defs=[
     {key:'SEO Overview',label:'SEO overview',fn:buildSEOSlide},
     {key:'__loc__',label:'Locations',fn:null},
-    {key:'Paid Search',label:'Paid search',fn:buildPaidSlide},
-    {key:'Paid Search \u2014 Keywords',label:'Paid keywords',fn:buildPaidKwSlide}
+    {key:'Paid Search',label:'Paid search',fn:buildPaidSlide,extra:'Paid Search \u2014 Keywords'}
   ];
 
   var first=true;
@@ -991,10 +1122,11 @@ function renderSlides(slides, locSlides) {
     var pw=ce('div'); pw.className='print-page'; div.appendChild(pw);
 
     if (d.key==='__loc__') buildLocSlide(locSlides,pw);
-    else d.fn(slides[d.key],pw);
+    else d.fn(slides[d.key],pw,d.extra?slides[d.extra]:undefined);
 
     if (!pw.children.length) return;
     makeEditable(pw);
+    buildCommentSection(pw);
 
     var tab=ce('button');
     tab.className='tab'+(first?' active':'');
@@ -1012,6 +1144,77 @@ function renderSlides(slides, locSlides) {
     first=false;
   });
 }
+
+// ── FOLDER-BASED REPORT LOADER ────────────────────────────────────────────
+(function() {
+  var manifest = null;
+
+  function populateClientDropdown() {
+    var monthVal = el('month-select-upload').value;
+    var clientSel = el('client-select-upload');
+    clientSel.innerHTML = '';
+    var month = manifest.months.find(function(m){ return m.value === monthVal; });
+    if (!month) return;
+    if (month.clients.length > 1) {
+      var all = ce('option'); all.value = '__all__';
+      all.textContent = 'All clients (' + month.clients.length + ')';
+      clientSel.appendChild(all);
+    }
+    month.clients.forEach(function(c) {
+      var opt = ce('option'); opt.value = c.file; opt.textContent = c.label;
+      clientSel.appendChild(opt);
+    });
+  }
+
+  fetch('reports/manifest.json')
+    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(data) {
+      if (!data.months || !data.months.length) return;
+      manifest = data;
+      var monthSel = el('month-select-upload');
+      manifest.months.forEach(function(m) {
+        var opt = ce('option'); opt.value = m.value; opt.textContent = m.label;
+        monthSel.appendChild(opt);
+      });
+      populateClientDropdown();
+      monthSel.addEventListener('change', populateClientDropdown);
+      el('report-selector').style.display = '';
+    })
+    .catch(function() { /* no manifest or file:// — drop zone is the UI */ });
+
+  el('load-report-btn').addEventListener('click', function() {
+    if (!manifest) return;
+    var monthVal = el('month-select-upload').value;
+    var fileVal = el('client-select-upload').value;
+    var month = manifest.months.find(function(m){ return m.value === monthVal; });
+    if (!month) return;
+    var files = fileVal === '__all__'
+      ? month.clients.map(function(c){ return c.file; })
+      : (fileVal ? [fileVal] : []);
+    if (!files.length) return;
+
+    var btn = el('load-report-btn');
+    btn.textContent = 'Loading…'; btn.disabled = true;
+
+    var loaded = 0, results = new Array(files.length), failed = false;
+    files.forEach(function(path, i) {
+      fetch(path)
+        .then(function(r) { if (!r.ok) throw new Error('Not found: ' + path); return r.text(); })
+        .then(function(text) {
+          results[i] = text;
+          if (++loaded === files.length) {
+            clients = results.map(parseClient);
+            initClients();
+            btn.textContent = 'Load Report'; btn.disabled = false;
+          }
+        })
+        .catch(function(err) {
+          if (!failed) { failed = true; alert(err.message + '\n\nMake sure you\'re running the app via a local server (e.g. python3 -m http.server 8080).'); }
+          btn.textContent = 'Load Report'; btn.disabled = false;
+        });
+    });
+  });
+}());
 
 }());
 </script>

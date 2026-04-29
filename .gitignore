@@ -1,0 +1,8 @@
+.DS_Store
+.claude/
+"emg_report_v2 (3).html"
+reports/*.md
+reports/*.txt
+reports/*/
+logos/*.png
+logos/*.jpg
