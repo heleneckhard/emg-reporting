@@ -1259,7 +1259,9 @@ function renderSlides(slides, locSlides) {
     fetch(DRIVE + 'files?' + params, { headers: { Authorization: 'Bearer ' + accessToken } })
       .then(function(r){ if (!r.ok) throw new Error('Drive API ' + r.status); return r.json(); })
       .then(function(data){
+        console.log('[Drive] files.list raw response:', data);
         var files = (data.files || []).filter(function(f){ return /\.(md|txt)$/i.test(f.name); });
+        console.log('[Drive] .md/.txt files found:', files.length, files.map(function(f){return f.name;}));
         if (!files.length) {
           el('folder-id-input').value = '';
           el('folder-id-input').placeholder = 'No .md files found — try another folder ID';
