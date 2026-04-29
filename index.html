@@ -1251,7 +1251,7 @@ function renderSlides(slides, locSlides) {
     el('drive-select-row').style.display = 'none';
 
     var params = new URLSearchParams({
-      q: "mimeType = 'text/plain' and trashed = false",
+      q: "name contains '_Report_' and trashed = false",
       fields: 'files(id,name,parents,mimeType)',
       pageSize: '1000',
       orderBy: 'name',
