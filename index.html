@@ -746,7 +746,11 @@ el('export-btn').addEventListener('click', function () {
     var logoImg = el('cover-logo-img');
     var logoSlug = clientName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
     logoImg.style.display = '';
-    logoImg.src = 'logos/' + logoSlug + '.png';
+    logoImg.onerror = function() {
+      this.onerror = function(){ this.style.display='none'; };
+      this.src = 'logos/' + logoSlug + '.png';
+    };
+    logoImg.src = 'logos/' + logoSlug + '.webp';
   }
   window.print();
 });
@@ -1116,6 +1120,13 @@ function buildLocSlide(locSlides, container, slideId) {
         el('cover-subtitle').textContent='Location Performance Report';
         el('cover-period').textContent=(c&&c.fm.month)||'—';
         el('cover-client').textContent=locName_;
+        var logoImg=el('cover-logo-img');
+        var logoSlug=(c&&c.fm.client||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+        if (logoSlug) {
+          logoImg.style.display='';
+          logoImg.onerror=function(){ this.onerror=function(){this.style.display='none';}; this.src='logos/'+logoSlug+'.png'; };
+          logoImg.src='logos/'+logoSlug+'.webp';
+        }
         var slideEl=slideId?document.getElementById(slideId):null;
         if (slideEl) {
           slideEl.classList.add('loc-slide-active');
