@@ -1250,17 +1250,22 @@ function renderSlides(slides, locSlides) {
     el('drive-select-row').style.display = 'none';
 
     var params = new URLSearchParams({
-      q: "'" + folderId + "' in parents and trashed = false",
-      fields: 'files(id,name)',
+      q: "mimeType = 'text/plain' and trashed = false",
+      fields: 'files(id,name,parents)',
       pageSize: '1000',
-      orderBy: 'name'
+      orderBy: 'name',
+      includeItemsFromAllDrives: 'true',
+      supportsAllDrives: 'true'
     });
 
     fetch(DRIVE + 'files?' + params, { headers: { Authorization: 'Bearer ' + accessToken } })
       .then(function(r){ if (!r.ok) throw new Error('Drive API ' + r.status); return r.json(); })
       .then(function(data){
         console.log('[Drive] files.list raw response:', data);
-        var files = (data.files || []).filter(function(f){ return /\.(md|txt)$/i.test(f.name); });
+        var files = (data.files || []).filter(function(f){
+          return /\.(md|txt)$/i.test(f.name) &&
+                 f.parents && f.parents.indexOf(folderId) !== -1;
+        });
         console.log('[Drive] .md/.txt files found:', files.length, files.map(function(f){return f.name;}));
         if (!files.length) {
           el('folder-id-input').value = '';
