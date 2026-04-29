@@ -6,6 +6,7 @@
 <title>EMG Report</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 /* ── RESET & TOKENS ───────────────────────────────────────────────────── */
 *{box-sizing:border-box;margin:0;padding:0}
@@ -92,15 +93,39 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-si
 }
 .sel-divider::before,.sel-divider::after{content:'';flex:1;height:1px;background:var(--border)}
 
-.drive-link-wrap{margin-top:.25rem}
-#drive-link{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:12px;font-weight:500;color:var(--muted);
-  text-decoration:none;padding:5px 12px;
-  border:1px solid var(--border);border-radius:20px;
-  background:var(--paper);transition:all .15s;
+#drive-connect-wrap{width:100%;max-width:480px}
+.drive-connect-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;font-family:var(--font-body);font-size:14px;font-weight:500;
+  color:var(--text);border:1.5px solid var(--border);border-radius:10px;
+  padding:14px 0;cursor:pointer;background:var(--paper);
+  transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.06);
 }
-#drive-link:hover{border-color:var(--brand);color:var(--brand)}
+.drive-connect-btn:hover{border-color:#4285f4;box-shadow:0 4px 14px rgba(66,133,244,.15)}
+.drive-status-row{
+  display:flex;align-items:center;gap:8px;font-size:12px;
+  color:var(--muted);margin-bottom:.85rem;
+  padding-bottom:.75rem;border-bottom:1px solid var(--border);
+}
+.drive-dot{width:7px;height:7px;border-radius:50%;background:#16a34a;flex-shrink:0}
+#drive-user-email{flex:1;font-size:12px;font-weight:500;color:var(--text)}
+.drive-signout{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline}
+.drive-signout:hover{color:var(--brand)}
+#folder-id-input{
+  flex:1;font-family:var(--font-body);font-size:13px;
+  border:1px solid var(--border);border-radius:6px;
+  padding:6px 10px;background:var(--bg);outline:none;color:var(--text);min-width:0;
+}
+#folder-id-input:focus{border-color:var(--brand)}
+.sel-hint{font-size:11px;color:var(--muted);opacity:.6;margin-top:.5rem}
+.sel-load-sm{
+  font-family:var(--font-body);font-size:13px;font-weight:500;
+  background:var(--brand);color:#fff;border:none;border-radius:6px;
+  padding:6px 14px;cursor:pointer;white-space:nowrap;flex-shrink:0;
+}
+.sel-load-sm:hover{background:var(--brand-mid)}
+.change-folder{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:0;margin-top:.6rem;text-decoration:underline;display:block;text-align:right}
+.change-folder:hover{color:var(--brand)}
 
 /* ── TOOLBAR ──────────────────────────────────────────────────────────── */
 #toolbar{
@@ -590,30 +615,51 @@ td .di{font-size:10.5px;margin-left:4px}
   <div id="upload-screen">
     <div class="upload-logo">Elysium Marketing Group</div>
     <h1>Monthly<br><em>Report Dashboard</em></h1>
-    <p>Select a saved report or drop files directly.</p>
+    <p>Connect your Drive folder to load reports, or drop files directly.</p>
 
-    <!-- Folder-based selector — shown when reports/manifest.json is found -->
-    <div id="report-selector" style="display:none">
-      <p class="sel-label">Select a report period and client</p>
-      <div class="sel-row">
-        <select id="month-select-upload"></select>
-        <select id="client-select-upload"></select>
-      </div>
-      <button class="sel-load" id="load-report-btn">Load Report</button>
-      <div class="sel-divider">or drop files directly</div>
+    <!-- Drive connect button — hidden after auth -->
+    <div id="drive-connect-wrap">
+      <button id="drive-connect-btn" class="drive-connect-btn">
+        <svg width="16" height="16" viewBox="0 0 87.3 78" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L28 53H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066DA"/><path d="M43.65 25L29.35 0c-1.35.8-2.5 1.9-3.3 3.3L1.2 48.5A9 9 0 000 53h28z" fill="#00AC47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75L86.1 57.5c.8-1.4 1.2-2.95 1.2-4.5H59.3l5.9 11.5z" fill="#EA4335"/><path d="M43.65 25L57.95 0H29.35z" fill="#00832D"/><path d="M59.3 53H87.3L73 28.5 57.95 0 43.65 25 59.3 53z" fill="#2684FC"/><path d="M13.8 76.8c1.35.8 2.9 1.2 4.5 1.2h50.7c1.6 0 3.15-.45 4.5-1.2L59.3 53H28z" fill="#FFBA00"/></svg>
+        Connect Google Drive
+      </button>
     </div>
+
+    <!-- Report selector — shown after Drive auth -->
+    <div id="report-selector" style="display:none">
+      <div class="drive-status-row">
+        <span class="drive-dot"></span>
+        <span id="drive-user-email"></span>
+        <button class="drive-signout" id="drive-signout-btn">Sign out</button>
+      </div>
+      <!-- Folder setup — shown until folder is confirmed -->
+      <div id="drive-folder-row" style="display:none">
+        <p class="sel-label">Paste your Drive folder ID</p>
+        <div class="sel-row">
+          <input id="folder-id-input" placeholder="e.g. 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs">
+          <button class="sel-load-sm" id="folder-confirm-btn">Set</button>
+        </div>
+        <p class="sel-hint">Found in the Drive URL after /folders/</p>
+      </div>
+      <!-- Month/client select — shown once folder confirmed -->
+      <div id="drive-select-row" style="display:none">
+        <p class="sel-label">Select a report period and client</p>
+        <div class="sel-row">
+          <select id="month-select-upload"></select>
+          <select id="client-select-upload"></select>
+        </div>
+        <button class="sel-load" id="load-report-btn">Load Report</button>
+        <button class="change-folder" id="change-folder-btn">Change folder</button>
+      </div>
+    </div>
+
+    <div class="sel-divider" style="width:100%;max-width:480px">or drop files directly</div>
 
     <div id="drop-zone">
       <div class="dz-icon">📂</div>
       <input type="file" id="file-input" accept=".md,.txt" multiple>
       <div id="dz-label">Drop files here or <span id="browse-btn">browse</span></div>
       <div class="dz-hint">Accepts .md or .txt — multiple clients supported</div>
-    </div>
-    <div class="drive-link-wrap">
-      <a id="drive-link" href="PASTE_GOOGLE_DRIVE_FOLDER_URL_HERE" target="_blank" rel="noopener">
-        <svg width="14" height="14" viewBox="0 0 87.3 78" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L28 53H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066DA"/><path d="M43.65 25L29.35 0c-1.35.8-2.5 1.9-3.3 3.3L1.2 48.5A9 9 0 000 53h28z" fill="#00AC47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75L86.1 57.5c.8-1.4 1.2-2.95 1.2-4.5H59.3l5.9 11.5z" fill="#EA4335"/><path d="M43.65 25L57.95 0H29.35z" fill="#00832D"/><path d="M59.3 53H87.3L73 28.5 57.95 0 43.65 25 59.3 53z" fill="#2684FC"/><path d="M13.8 76.8c1.35.8 2.9 1.2 4.5 1.2h50.7c1.6 0 3.15-.45 4.5-1.2L59.3 53H28z" fill="#FFBA00"/></svg>
-        Open source files folder
-      </a>
     </div>
   </div>
 
@@ -1145,75 +1191,203 @@ function renderSlides(slides, locSlides) {
   });
 }
 
-// ── FOLDER-BASED REPORT LOADER ────────────────────────────────────────────
+// ── GOOGLE DRIVE LOADER ───────────────────────────────────────────────────
 (function() {
-  var manifest = null;
+  var CLIENT_ID = '312478412815-ode8i8tl7i4rr814ri02k4o4pe3nm1kc.apps.googleusercontent.com';
+  var SCOPE = 'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/userinfo.email';
+  var LS_FOLDER = 'emg_drive_folder_id';
+  var DRIVE = 'https://www.googleapis.com/drive/v3/';
 
-  function populateClientDropdown() {
-    var monthVal = el('month-select-upload').value;
-    var clientSel = el('client-select-upload');
-    clientSel.innerHTML = '';
-    var month = manifest.months.find(function(m){ return m.value === monthVal; });
-    if (!month) return;
-    if (month.clients.length > 1) {
-      var all = ce('option'); all.value = '__all__';
-      all.textContent = 'All clients (' + month.clients.length + ')';
-      clientSel.appendChild(all);
-    }
-    month.clients.forEach(function(c) {
-      var opt = ce('option'); opt.value = c.file; opt.textContent = c.label;
-      clientSel.appendChild(opt);
+  var accessToken = null;
+  var tokenClient = null;
+  var driveFiles = []; // [{id, name, monthVal, clientLabel}]
+
+  var MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+
+  function monthLabel(val) {
+    var p = val.split('-');
+    return MONTHS[parseInt(p[1], 10) - 1] + ' ' + p[0];
+  }
+
+  function parseFilename(name) {
+    var m = name.match(/^(.+?)_(?:SEO_)?Report_(\d{4}-\d{2})\.(md|txt)$/i);
+    if (!m) return null;
+    return {
+      monthVal: m[2],
+      clientLabel: m[1].replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); })
+    };
+  }
+
+  function initTokenClient() {
+    if (!window.google || !window.google.accounts) { setTimeout(initTokenClient, 150); return; }
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: SCOPE,
+      callback: onToken
     });
   }
 
-  fetch('reports/manifest.json')
-    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
-    .then(function(data) {
-      if (!data.months || !data.months.length) return;
-      manifest = data;
-      var monthSel = el('month-select-upload');
-      manifest.months.forEach(function(m) {
-        var opt = ce('option'); opt.value = m.value; opt.textContent = m.label;
-        monthSel.appendChild(opt);
-      });
-      populateClientDropdown();
-      monthSel.addEventListener('change', populateClientDropdown);
-      el('report-selector').style.display = '';
+  function onToken(resp) {
+    if (resp.error) { console.error('Drive auth error:', resp.error); return; }
+    accessToken = resp.access_token;
+    fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: { Authorization: 'Bearer ' + accessToken }
     })
-    .catch(function() { /* no manifest or file:// — drop zone is the UI */ });
+    .then(function(r){ return r.json(); })
+    .then(function(info){ el('drive-user-email').textContent = info.email || 'Connected'; })
+    .catch(function(){ el('drive-user-email').textContent = 'Connected'; });
 
-  el('load-report-btn').addEventListener('click', function() {
-    if (!manifest) return;
+    el('drive-connect-wrap').style.display = 'none';
+    el('report-selector').style.display = '';
+
+    var saved = localStorage.getItem(LS_FOLDER);
+    if (saved) { loadFolder(saved); } else { el('drive-folder-row').style.display = ''; }
+  }
+
+  function loadFolder(folderId) {
+    el('drive-folder-row').style.display = 'none';
+    el('drive-select-row').style.display = 'none';
+
+    var params = new URLSearchParams({
+      q: "'" + folderId + "' in parents and trashed = false",
+      fields: 'files(id,name)',
+      pageSize: '1000',
+      orderBy: 'name'
+    });
+
+    fetch(DRIVE + 'files?' + params, { headers: { Authorization: 'Bearer ' + accessToken } })
+      .then(function(r){ if (!r.ok) throw new Error('Drive API ' + r.status); return r.json(); })
+      .then(function(data){
+        var files = (data.files || []).filter(function(f){ return /\.(md|txt)$/i.test(f.name); });
+        if (!files.length) {
+          el('folder-id-input').value = '';
+          el('folder-id-input').placeholder = 'No .md files found — try another folder ID';
+          el('drive-folder-row').style.display = '';
+          return;
+        }
+        localStorage.setItem(LS_FOLDER, folderId);
+        driveFiles = files.map(function(f){
+          var p = parseFilename(f.name);
+          return { id: f.id, name: f.name, monthVal: p ? p.monthVal : null, clientLabel: p ? p.clientLabel : f.name };
+        });
+        populateDropdowns();
+        el('drive-select-row').style.display = '';
+      })
+      .catch(function(err){
+        alert('Could not read Drive folder:\n' + err.message + '\n\nMake sure the Drive API is enabled in your GCP project and the folder is shared with your account.');
+        el('drive-folder-row').style.display = '';
+      });
+  }
+
+  function populateDropdowns() {
+    var monthMap = {};
+    driveFiles.forEach(function(f){
+      var key = f.monthVal || '__unknown__';
+      if (!monthMap[key]) monthMap[key] = [];
+      monthMap[key].push(f);
+    });
+    var months = Object.keys(monthMap).sort(function(a,b){ return b.localeCompare(a); });
+
+    var monthSel = el('month-select-upload');
+    monthSel.innerHTML = '';
+    months.forEach(function(val){
+      var opt = ce('option'); opt.value = val;
+      opt.textContent = val === '__unknown__' ? 'Unknown period' : monthLabel(val);
+      monthSel.appendChild(opt);
+    });
+
+    function updateClients() {
+      var clientSel = el('client-select-upload');
+      clientSel.innerHTML = '';
+      var list = monthMap[monthSel.value] || [];
+      if (list.length > 1) {
+        var all = ce('option'); all.value = '__all__';
+        all.textContent = 'All clients (' + list.length + ')';
+        clientSel.appendChild(all);
+      }
+      list.forEach(function(f){
+        var opt = ce('option'); opt.value = f.id; opt.textContent = f.clientLabel;
+        clientSel.appendChild(opt);
+      });
+    }
+    updateClients();
+    monthSel.addEventListener('change', updateClients);
+  }
+
+  function fetchDriveFile(fileId) {
+    return fetch(DRIVE + 'files/' + fileId + '?alt=media', {
+      headers: { Authorization: 'Bearer ' + accessToken }
+    }).then(function(r){
+      if (!r.ok) throw new Error('Could not fetch file (status ' + r.status + ')');
+      return r.text();
+    });
+  }
+
+  // ── Button listeners ───────────────────────────────────────────────────
+  el('drive-connect-btn').addEventListener('click', function(){
+    if (!tokenClient) { alert('Google sign-in not ready yet — please try again.'); return; }
+    tokenClient.requestAccessToken();
+  });
+
+  el('folder-confirm-btn').addEventListener('click', function(){
+    var val = el('folder-id-input').value.trim();
+    var m = val.match(/folders\/([a-zA-Z0-9_-]+)/);
+    var folderId = m ? m[1] : val;
+    if (!folderId) return;
+    loadFolder(folderId);
+  });
+
+  el('folder-id-input').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') el('folder-confirm-btn').click();
+  });
+
+  el('change-folder-btn').addEventListener('click', function(){
+    localStorage.removeItem(LS_FOLDER);
+    el('drive-select-row').style.display = 'none';
+    el('folder-id-input').value = localStorage.getItem(LS_FOLDER) || '';
+    el('drive-folder-row').style.display = '';
+  });
+
+  el('load-report-btn').addEventListener('click', function(){
     var monthVal = el('month-select-upload').value;
     var fileVal = el('client-select-upload').value;
-    var month = manifest.months.find(function(m){ return m.value === monthVal; });
-    if (!month) return;
-    var files = fileVal === '__all__'
-      ? month.clients.map(function(c){ return c.file; })
-      : (fileVal ? [fileVal] : []);
-    if (!files.length) return;
+    if (!fileVal || !accessToken) return;
+
+    var fileIds = fileVal === '__all__'
+      ? driveFiles.filter(function(f){ return f.monthVal === monthVal; }).map(function(f){ return f.id; })
+      : [fileVal];
+    if (!fileIds.length) return;
 
     var btn = el('load-report-btn');
     btn.textContent = 'Loading…'; btn.disabled = true;
 
-    var loaded = 0, results = new Array(files.length), failed = false;
-    files.forEach(function(path, i) {
-      fetch(path)
-        .then(function(r) { if (!r.ok) throw new Error('Not found: ' + path); return r.text(); })
-        .then(function(text) {
+    var results = new Array(fileIds.length), loaded = 0, failed = false;
+    fileIds.forEach(function(id, i){
+      fetchDriveFile(id)
+        .then(function(text){
           results[i] = text;
-          if (++loaded === files.length) {
+          if (++loaded === fileIds.length) {
             clients = results.map(parseClient);
             initClients();
             btn.textContent = 'Load Report'; btn.disabled = false;
           }
         })
-        .catch(function(err) {
-          if (!failed) { failed = true; alert(err.message + '\n\nMake sure you\'re running the app via a local server (e.g. python3 -m http.server 8080).'); }
+        .catch(function(err){
+          if (!failed) { failed = true; alert('Error loading file:\n' + err.message); }
           btn.textContent = 'Load Report'; btn.disabled = false;
         });
     });
   });
+
+  el('drive-signout-btn').addEventListener('click', function(){
+    if (accessToken && window.google) google.accounts.oauth2.revoke(accessToken);
+    accessToken = null; driveFiles = [];
+    el('report-selector').style.display = 'none';
+    el('drive-connect-wrap').style.display = '';
+  });
+
+  initTokenClient();
 }());
 
 }());
