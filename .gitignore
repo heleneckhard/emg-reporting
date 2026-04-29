@@ -4,5 +4,3 @@
 reports/*.md
 reports/*.txt
 reports/*/
-logos/*.png
-logos/*.jpg
