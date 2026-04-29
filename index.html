@@ -1252,7 +1252,7 @@ function renderSlides(slides, locSlides) {
 
     var params = new URLSearchParams({
       q: "mimeType = 'text/plain' and trashed = false",
-      fields: 'files(id,name,parents)',
+      fields: 'files(id,name,parents,mimeType)',
       pageSize: '1000',
       orderBy: 'name',
       includeItemsFromAllDrives: 'true',
@@ -1262,6 +1262,8 @@ function renderSlides(slides, locSlides) {
     fetch(DRIVE + 'files?' + params, { headers: { Authorization: 'Bearer ' + accessToken } })
       .then(function(r){ if (!r.ok) throw new Error('Drive API ' + r.status); return r.json(); })
       .then(function(data){
+        console.log('[Drive] raw count:', (data.files||[]).length, 'folder:', folderId);
+        (data.files||[]).slice(0,5).forEach(function(f){ console.log('[Drive] sample:', f.name, 'mime:', f.mimeType, 'parents:', f.parents); });
         var files = (data.files || []).filter(function(f){
           return /\.(md|txt)$/i.test(f.name) &&
                  f.parents && f.parents.indexOf(folderId) !== -1;
