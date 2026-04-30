@@ -288,7 +288,8 @@ td .di{font-size:10.5px;margin-left:4px}
   font-size:9.5px;font-weight:600;color:var(--muted);
   text-transform:uppercase;letter-spacing:.09em;margin-bottom:.25rem;
 }
-.loc-row{display:flex;align-items:center;padding:.3rem 0;border-bottom:none}
+.loc-camp-lbl{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;flex-shrink:0;width:46px;padding-right:6px;line-height:1.3}
+.loc-row{display:flex;align-items:flex-start;padding:.3rem 0;border-bottom:none}
 .loc-name{font-size:12.5px;font-weight:600;color:var(--brand);width:auto;flex:1}
 .loc-metrics{display:flex;flex:1;gap:0}
 .loc-m{flex:1;padding:0 14px;border-right:1px solid var(--border)}
@@ -611,6 +612,7 @@ td .di{font-size:10.5px;margin-left:4px}
   /* ── LOCATION CARDS ──────────────────────────────────────────────── */
   .loc-card-header{display:flex!important;align-items:center!important;padding:.25rem 0 .45rem!important;border-bottom:.5pt solid #e5e2dc!important;margin-bottom:.35rem!important}
   .loc-section-lbl{font-size:6.5pt!important;margin-bottom:2pt!important}
+  .loc-camp-lbl{font-size:6pt!important;width:36pt!important;padding-right:4pt!important}
   .loc-export-btn,.loc-insights-tog{display:none!important}
   .loc-insights-wrap{display:block!important}
 
@@ -1072,12 +1074,29 @@ function buildSEOSlide(block, container) {
 function buildLocSlide(locSlides, container, slideId) {
   var SEO_COLS=['Sessions','Impressions','Form Submissions','CTR','Avg Position'];
   var SEO_CLS=['lca','lcb','lcc','lcd','lce'];
-  var ADS_COLS=['Amount Spent','Clicks','Impressions','CTR','Avg CPC'];
-  var ADS_CLS=['lad_a','lad_b','lad_c','lad_d','lad_e'];
+  var ADS_CLS=['lac_a','lac_b','lac_c','lac_d'];
 
-  var hasAds=locSlides.some(function(loc){
-    return !!(extractSec(loc.block,'Account Performance')||extractSec(loc.block,'Google Ads Performance')||extractSec(loc.block,'Google Ads'));
-  });
+  // Extract all ### Google Ads — <name> subsections from a location block
+  function extractLocCampaigns(block) {
+    var out=[], re=/###\s+Google Ads\s+—\s+(.+)\n([\s\S]*?)(?=\n###|\n##|$)/g, m;
+    while ((m=re.exec(block))!==null) {
+      var name=m[1].trim();
+      var typeM=name.match(/^\(([^)]+)\)/);
+      out.push({name:name, label:typeM?typeM[1]:name, tbl:parseTbl(m[2].trim())});
+    }
+    return out;
+  }
+
+  // Detect 4th ads column name (conversion label) from first campaign found
+  var ADS_COLS=['Amount Spent','Clicks','Impressions','Leads'];
+  for (var pi=0;pi<locSlides.length;pi++) {
+    var pc=extractLocCampaigns(locSlides[pi].block);
+    if (pc.length&&pc[0].tbl.rows.length>=4&&pc[0].tbl.rows[3][0]) {
+      ADS_COLS[3]=pc[0].tbl.rows[3][0]; break;
+    }
+  }
+
+  var hasAds=locSlides.some(function(loc){ return extractLocCampaigns(loc.block).length>0; });
 
   container.appendChild(makePanel(SEO_COLS.map(function(c,j){
     return {label:c,hide:function(h){container.querySelectorAll('.'+SEO_CLS[j]).forEach(function(e){e.style.display=h?'none':'';});}};
@@ -1092,10 +1111,9 @@ function buildLocSlide(locSlides, container, slideId) {
     var locId=uid();
     var ga4=extractSec(loc.block,'GA4 Organic Sessions');
     var gsc=extractSec(loc.block,'GSC Performance');
-    var adsRaw=extractSec(loc.block,'Account Performance')||extractSec(loc.block,'Google Ads Performance')||extractSec(loc.block,'Google Ads');
     var ga4t=ga4?parseTbl(ga4):{headers:[],rows:[]};
     var gsct=gsc?parseTbl(gsc):{headers:[],rows:[]};
-    var adst=adsRaw?parseTbl(adsRaw):{headers:[],rows:[]};
+    var locCamps=extractLocCampaigns(loc.block);
 
     var card=ce('div'); card.className='section'; card.style.marginBottom='1rem';
     card.setAttribute('data-loc-id',locId);
@@ -1140,20 +1158,27 @@ function buildLocSlide(locSlides, container, slideId) {
     hdr.appendChild(nameEl); hdr.appendChild(expBtn);
     card.appendChild(hdr);
 
-    // Ads row (shown above SEO when data exists)
-    if (adst.rows.length) {
+    // Google Ads rows — one per campaign (Pmax, Search, etc.)
+    if (locCamps.length) {
       var adsHdr=ce('div'); adsHdr.className='loc-section-lbl'; adsHdr.textContent='Google Ads';
       card.appendChild(adsHdr);
-      var adsRow=ce('div'); adsRow.className='loc-row';
-      adsRow.innerHTML='<div class="loc-metrics">'+ADS_COLS.map(function(col,j){
-        var r=findRow(adst,col); var cls=ADS_CLS[j];
-        if (!r||!r[1]||r[1]==='—') return '<div class="loc-m '+cls+'"></div>';
-        var dcl=dclass(r[3],col);
-        var d=(r[3]&&r[3]!=='—')?'<div class="d '+dcl+'">'+r[3]+'</div>':'';
-        return '<div class="loc-m '+cls+'"><div class="k">'+col+'</div><div class="v">'+r[1]+'</div>'+d+'</div>';
-      }).join('')+'</div>';
-      card.appendChild(adsRow);
-      var sep=ce('div'); sep.style.cssText='height:1px;background:var(--border);margin:.35rem 0';
+      locCamps.forEach(function(camp){
+        var campRow=ce('div'); campRow.className='loc-row';
+        var lbl=ce('div'); lbl.className='loc-camp-lbl'; lbl.textContent=camp.label;
+        campRow.appendChild(lbl);
+        var mDiv=ce('div'); mDiv.className='loc-metrics';
+        ADS_COLS.forEach(function(col,j){
+          var r=findRow(camp.tbl,col); var cell=ce('div'); cell.className='loc-m '+ADS_CLS[j];
+          if (r&&r[1]&&r[1]!=='—') {
+            var d=(r[3]&&r[3]!=='—')?'<div class="d '+dclass(r[3],col)+'">'+r[3]+'</div>':'';
+            cell.innerHTML='<div class="k">'+col+'</div><div class="v">'+r[1]+'</div>'+d;
+          }
+          mDiv.appendChild(cell);
+        });
+        campRow.appendChild(mDiv);
+        card.appendChild(campRow);
+      });
+      var sep=ce('div'); sep.style.cssText='height:1px;background:var(--border);margin:.4rem 0';
       card.appendChild(sep);
       var seoHdr=ce('div'); seoHdr.className='loc-section-lbl'; seoHdr.textContent='SEO';
       card.appendChild(seoHdr);
@@ -1162,28 +1187,29 @@ function buildLocSlide(locSlides, container, slideId) {
     // SEO row
     var tbls=[ga4t,gsct,ga4t,gsct,gsct];
     var seoRow=ce('div'); seoRow.className='loc-row';
-    seoRow.innerHTML='<div class="loc-metrics">'+SEO_COLS.map(function(col,j){
-      var r=findRow(tbls[j],col); var cls=SEO_CLS[j];
-      if (!r||!r[1]||r[1]==='—') return '<div class="loc-m '+cls+'"></div>';
-      var dcl=dclass(r[3],col);
-      var d=(r[3]&&r[3]!=='—')?'<div class="d '+dcl+'">'+r[3]+'</div>':'';
-      return '<div class="loc-m '+cls+'"><div class="k">'+col+'</div><div class="v">'+r[1]+'</div>'+d+'</div>';
-    }).join('')+'</div>';
+    var seoDiv=ce('div'); seoDiv.className='loc-metrics';
+    SEO_COLS.forEach(function(col,j){
+      var r=findRow(tbls[j],col); var cell=ce('div'); cell.className='loc-m '+SEO_CLS[j];
+      if (r&&r[1]&&r[1]!=='—') {
+        var d=(r[3]&&r[3]!=='—')?'<div class="d '+dclass(r[3],col)+'">'+r[3]+'</div>':'';
+        cell.innerHTML='<div class="k">'+col+'</div><div class="v">'+r[1]+'</div>'+d;
+      }
+      seoDiv.appendChild(cell);
+    });
+    seoRow.appendChild(seoDiv);
     card.appendChild(seoRow);
 
-    // Insights toggle + collapsible summary/notes
+    // Insights toggle
     var togBtn=ce('button'); togBtn.className='tog loc-insights-tog'; togBtn.textContent='Insights';
     togBtn.style.marginTop='.65rem';
     var insightsWrap=ce('div'); insightsWrap.className='loc-insights-wrap';
     insightsWrap.style.cssText='display:none;margin-top:.65rem;padding-top:.65rem;border-top:1px solid var(--border)';
-    var insightsSec=ce('div');
     var blk=ce('div'); blk.className='comment-block';
     var t=ce('div'); t.className='comment-block-title'; t.textContent='Insights';
     var ul=ce('ul'); ul.className='comment-list'; ul.contentEditable='true'; ul.spellcheck=false;
-    var li=ce('li'); ul.appendChild(li);
+    ul.appendChild(ce('li'));
     blk.appendChild(t); blk.appendChild(ul);
-    insightsSec.appendChild(blk);
-    insightsWrap.appendChild(insightsSec);
+    insightsWrap.appendChild(blk);
     togBtn.addEventListener('click',function(){
       var open=insightsWrap.style.display!=='none';
       insightsWrap.style.display=open?'none':'';
