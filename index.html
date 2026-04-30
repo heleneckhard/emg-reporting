@@ -736,7 +736,6 @@ el('export-btn').addEventListener('click', function () {
     el('cover-title').innerHTML = '<em>' + clientName + '</em>';
     el('cover-subtitle').textContent = 'Digital Marketing Monthly Performance Report';
     el('cover-period').textContent = period || '—';
-    el('cover-client').textContent = clientName;
     var logoImg = el('cover-logo-img');
     var logoSlug = clientName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
     logoImg.style.display = '';
