@@ -342,8 +342,8 @@ td .di{font-size:10.5px;margin-left:4px}
 
   /* ── PAGE SETUP ── */
   @page{
-    size:8.5in 11in portrait;
-    margin:.55in 1.1in .55in .75in;
+    size:13.33in 7.5in landscape;
+    margin:.4in .65in .4in .65in;
   }
 
   /* force background colours / images */
@@ -366,7 +366,7 @@ td .di{font-size:10.5px;margin-left:4px}
     background:#fff!important;
     color:#1c1917!important;
     font-family:'DM Sans',system-ui,sans-serif!important;
-    font-size:9.5pt!important;
+    font-size:10pt!important;
     line-height:1.45!important;
     margin:0!important;
     padding:0!important;
@@ -390,9 +390,9 @@ td .di{font-size:10.5px;margin-left:4px}
   #cover-page{
     display:block!important;
     position:relative;
-    margin:-.55in -1.1in -.55in -.75in;   /* bleed to page edge */
-    width:8.5in;
-    height:11in;
+    margin:-.4in -.65in -.4in -.65in;   /* bleed to page edge */
+    width:13.33in;
+    height:7.5in;
     overflow:hidden;
     background:#fff;
     page-break-after:always;
@@ -401,36 +401,36 @@ td .di{font-size:10.5px;margin-left:4px}
   /* brand bar top */
   .cover-accent{
     position:absolute;top:0;left:0;
-    width:8.5in;height:8pt;
+    width:13.33in;height:8pt;
     background:var(--brand);
   }
   /* left rule */
   .cover-sidebar{
-    position:absolute;left:.75in;top:.55in;bottom:.55in;
+    position:absolute;left:.65in;top:.4in;bottom:.4in;
     width:2pt;background:var(--brand);opacity:.18;
   }
   .cover-inner{
     position:absolute;
-    top:3.75in;left:.95in;right:.95in;
+    top:2.2in;left:.9in;right:.9in;
   }
   .cover-eyebrow{
-    font-size:7.5pt;font-weight:600;
+    font-size:8pt;font-weight:600;
     letter-spacing:.2em;text-transform:uppercase;
-    color:var(--brand);margin-bottom:16pt;
+    color:var(--brand);margin-bottom:14pt;
   }
   .cover-title{
     font-family:'DM Serif Display',Georgia,serif!important;
-    font-size:46pt;line-height:.95;
+    font-size:42pt;line-height:.95;
     color:#1c1917;margin-bottom:10pt;
   }
   .cover-title em{ color:var(--brand);font-style:italic }
   .cover-subtitle{
     font-size:13pt;color:#78716c;
-    font-weight:300;margin-bottom:32pt;
+    font-weight:300;margin-bottom:24pt;
   }
   .cover-meta-grid{
     display:grid;grid-template-columns:max-content;
-    gap:14pt;padding-top:14pt;
+    gap:12pt;padding-top:12pt;
     border-top:1pt solid #e5e2dc;
   }
   .cover-meta-item .k{
@@ -440,29 +440,30 @@ td .di{font-size:10.5px;margin-left:4px}
   }
   .cover-meta-item .v{ font-size:10pt;font-weight:600;color:#1c1917 }
   .cover-footer{
-    position:absolute;bottom:.3in;left:.95in;right:.95in;
+    position:absolute;bottom:.25in;left:.9in;right:.9in;
     display:flex;align-items:center;justify-content:space-between;
-    padding-top:10pt;border-top:1pt solid #e5e2dc;
+    padding-top:8pt;border-top:1pt solid #e5e2dc;
   }
-  .cover-emg-logo{ height:.7in;opacity:.85;display:block }
+  .cover-emg-logo{ height:.6in;opacity:.85;display:block }
   .cover-footer-url{ font-size:7pt;color:#a8a29e }
 
   /* ── SLIDE SECTION HEADER ────────────────────────────────────────── */
   .print-section-header{
     display:flex!important;
-    align-items:center;
-    margin-bottom:6pt;
+    align-items:baseline;
+    margin-bottom:8pt;
+    padding-bottom:8pt;
+    border-bottom:2pt solid var(--brand);
   }
   .psh-label{
     font-family:'DM Serif Display',Georgia,serif!important;
-    font-size:18pt;color:#1c1917;flex:1;
+    font-size:22pt;color:#1c1917;flex:1;
+    letter-spacing:-.01em;
   }
-  .psh-period{ font-size:8pt;color:#78716c;margin-left:8pt }
+  .psh-period{ font-size:9pt;color:#78716c;margin-left:10pt;font-weight:400 }
   .psh-emg-logo{ height:22pt;margin-left:12pt;opacity:.7;display:block }
   .psh-rule{
-    height:1pt;background:var(--brand);
-    margin:0 0 10pt 0;
-    opacity:.4;
+    display:none;
   }
 
   /* ── PRINT PAGE WRAPPER ──────────────────────────────────────────── */
@@ -477,19 +478,19 @@ td .di{font-size:10.5px;margin-left:4px}
     border:1pt solid #e5e2dc!important;
     border-radius:3pt!important;
     box-shadow:none!important;
-    padding:8pt 10pt!important;
-    margin-bottom:7pt!important;
+    padding:9pt 11pt!important;
+    margin-bottom:8pt!important;
     break-inside:avoid;
     page-break-inside:avoid;
   }
   .section-title{
-    font-size:7.5pt!important;
+    font-size:8pt!important;
     font-weight:600!important;
     color:#78716c!important;
     text-transform:uppercase!important;
     letter-spacing:.08em!important;
     padding-bottom:5pt!important;
-    margin-bottom:7pt!important;
+    margin-bottom:8pt!important;
     border-bottom:1pt solid #e5e2dc!important;
   }
   .section-title:empty{ display:none!important }
@@ -498,15 +499,15 @@ td .di{font-size:10.5px;margin-left:4px}
   .metric-grid{
     display:flex!important;
     flex-wrap:wrap!important;
-    gap:5pt!important;
+    gap:6pt!important;
   }
   .metric-card{
     flex:1!important;
-    min-width:80pt!important;
+    min-width:85pt!important;
     background:#f7f6f3!important;
     border:1pt solid #e5e2dc!important;
     border-radius:3pt!important;
-    padding:7pt 8pt!important;
+    padding:8pt 10pt!important;
     break-inside:avoid;
     page-break-inside:avoid;
   }
@@ -514,36 +515,36 @@ td .di{font-size:10.5px;margin-left:4px}
   .metric-card .lbl{
     font-size:7pt!important;
     letter-spacing:.07em!important;
-    margin-bottom:2pt!important;
+    margin-bottom:3pt!important;
   }
-  .metric-card .val{ font-size:12pt!important;letter-spacing:-.02em!important }
-  .metric-card .dlt{ font-size:8pt!important;margin-top:2pt!important }
+  .metric-card .val{ font-size:14pt!important;letter-spacing:-.02em!important }
+  .metric-card .dlt{ font-size:8.5pt!important;margin-top:3pt!important }
 
   /* ── TABLES ──────────────────────────────────────────────────────── */
   .tbl-wrap{ overflow:visible!important }
   table{
     width:100%!important;
-    font-size:8.5pt!important;
+    font-size:9pt!important;
     border-collapse:collapse!important;
   }
   thead tr{ border-bottom:1.5pt solid #e5e2dc!important }
   th{
-    font-size:7pt!important;
+    font-size:7.5pt!important;
     font-weight:600!important;
-    padding:4pt 5pt!important;
+    padding:5pt 6pt!important;
     color:#78716c!important;
     text-transform:uppercase!important;
     letter-spacing:.06em!important;
     white-space:nowrap!important;
   }
   td{
-    padding:4pt 5pt!important;
+    padding:5pt 6pt!important;
     border-bottom:.5pt solid #e5e2dc!important;
     vertical-align:top!important;
   }
   tr:last-child td{ border-bottom:none!important }
   tr:hover td{ background:transparent!important }
-  td .di{ font-size:6.5pt!important }
+  td .di{ font-size:7pt!important }
 
   /* ── BUCKET ROWS ─────────────────────────────────────────────────── */
   .bucket-row{display:flex!important;align-items:flex-start!important;padding:5pt 0!important;border-bottom:.5pt solid #e5e2dc!important;break-inside:avoid}
@@ -606,8 +607,8 @@ td .di{font-size:10.5px;margin-left:4px}
   .comment-list li:only-child:empty::before{content:none!important}
 
   /* ── COVER LOGO ──────────────────────────────────────────────────── */
-  .cover-logo-wrap{display:block!important;position:static!important;margin-bottom:18pt;overflow:hidden}
-  .cover-logo-wrap img{max-height:.55in;max-width:2.2in;object-fit:contain;display:block}
+  .cover-logo-wrap{display:block!important;position:static!important;margin-bottom:16pt;overflow:hidden}
+  .cover-logo-wrap img{max-height:.5in;max-width:2.4in;object-fit:contain;display:block}
 
   /* ── LOCATION CARDS ──────────────────────────────────────────────── */
   .loc-card-header{display:flex!important;align-items:center!important;padding:.25rem 0 .45rem!important;border-bottom:.5pt solid #e5e2dc!important;margin-bottom:.35rem!important}
@@ -1078,11 +1079,17 @@ function buildLocSlide(locSlides, container, slideId) {
 
   // Extract all ### Google Ads — <name> subsections from a location block
   function extractLocCampaigns(block) {
-    var out=[], re=/###\s+Google Ads\s+—\s+(.+)\n([\s\S]*?)(?=\n###|\n##|$)/g, m;
-    while ((m=re.exec(block))!==null) {
-      var name=m[1].trim();
-      var typeM=name.match(/^\(([^)]+)\)/);
-      out.push({name:name, label:typeM?typeM[1]:name, tbl:parseTbl(m[2].trim())});
+    var out=[], lines=block.split('\n'), i=0;
+    while (i<lines.length) {
+      if (/^###\s+Google Ads/i.test(lines[i])) {
+        // strip the header prefix — accepts em dash, en dash, or hyphen separator
+        var name=lines[i].replace(/^###\s+Google Ads\s*[—–‒\-]+\s*/,'').trim();
+        var typeM=name.match(/^\(([^)]+)\)/);
+        i++;
+        var content=[];
+        while (i<lines.length && !/^#{2,3}\s/.test(lines[i])) { content.push(lines[i]); i++; }
+        out.push({name:name, label:typeM?typeM[1]:name, tbl:parseTbl(content.join('\n'))});
+      } else { i++; }
     }
     return out;
   }
