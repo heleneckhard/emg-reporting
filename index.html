@@ -342,7 +342,7 @@ td .di{font-size:10.5px;margin-left:4px}
   /* ── PAGE SETUP ── */
   @page{
     size:8.5in 11in portrait;
-    margin:.55in .9in .55in .75in;
+    margin:.55in 1.1in .55in .75in;
   }
 
   /* force background colours / images */
@@ -389,7 +389,7 @@ td .di{font-size:10.5px;margin-left:4px}
   #cover-page{
     display:block!important;
     position:relative;
-    margin:-.55in -.9in -.55in -.75in;   /* bleed to page edge */
+    margin:-.55in -1.1in -.55in -.75in;   /* bleed to page edge */
     width:8.5in;
     height:11in;
     overflow:hidden;
@@ -410,7 +410,7 @@ td .di{font-size:10.5px;margin-left:4px}
   }
   .cover-inner{
     position:absolute;
-    top:2.8in;left:.95in;right:.75in;
+    top:3.75in;left:.95in;right:.95in;
   }
   .cover-eyebrow{
     font-size:7.5pt;font-weight:600;
@@ -439,7 +439,7 @@ td .di{font-size:10.5px;margin-left:4px}
   }
   .cover-meta-item .v{ font-size:10pt;font-weight:600;color:#1c1917 }
   .cover-footer{
-    position:absolute;bottom:.3in;left:.95in;right:.75in;
+    position:absolute;bottom:.3in;left:.95in;right:.95in;
     display:flex;align-items:center;justify-content:space-between;
     padding-top:10pt;border-top:1pt solid #e5e2dc;
   }
@@ -457,7 +457,7 @@ td .di{font-size:10.5px;margin-left:4px}
     font-size:18pt;color:#1c1917;flex:1;
   }
   .psh-period{ font-size:8pt;color:#78716c;margin-left:8pt }
-  .psh-emg-logo{ height:11pt;margin-left:12pt;opacity:.7;display:block }
+  .psh-emg-logo{ height:22pt;margin-left:12pt;opacity:.7;display:block }
   .psh-rule{
     height:1pt;background:var(--brand);
     margin:0 0 10pt 0;
@@ -605,8 +605,8 @@ td .di{font-size:10.5px;margin-left:4px}
   .comment-list li:only-child:empty::before{content:none!important}
 
   /* ── COVER LOGO ──────────────────────────────────────────────────── */
-  .cover-logo-wrap{position:absolute;top:.7in;right:.75in;max-width:1.8in;max-height:.55in;display:block!important}
-  .cover-logo-wrap img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+  .cover-logo-wrap{display:block!important;position:static!important;max-height:.6in;margin-bottom:16pt}
+  .cover-logo-wrap img{max-height:100%;max-width:2in;object-fit:contain;display:block}
 
   /* ── LOCATION CARDS ──────────────────────────────────────────────── */
   .loc-card-header{display:flex!important;align-items:center!important;padding:.25rem 0 .45rem!important;border-bottom:.5pt solid #e5e2dc!important;margin-bottom:.35rem!important}
@@ -627,7 +627,7 @@ td .di{font-size:10.5px;margin-left:4px}
 
   <!-- ── UPLOAD SCREEN ─────────────────────────────────────────────── -->
   <div id="upload-screen">
-    <div class="upload-logo"><img src="logos/elysium.webp" alt="Elysium Marketing Group" style="height:28px;opacity:.85"></div>
+    <div class="upload-logo"><img src="logos/elysium.webp" alt="Elysium Marketing Group" style="height:72px;opacity:.85"></div>
     <h1>Monthly<br><em>Report Dashboard</em></h1>
     <p>Connect your Drive folder to load reports, or drop files directly.</p>
 
@@ -694,8 +694,8 @@ td .di{font-size:10.5px;margin-left:4px}
       <div id="cover-page">
         <div class="cover-accent"></div>
         <div class="cover-sidebar"></div>
-        <div class="cover-logo-wrap"><img id="cover-logo-img" src="" alt="" onerror="this.style.display='none'"></div>
         <div class="cover-inner">
+          <div class="cover-logo-wrap"><img id="cover-logo-img" src="" alt="" onerror="this.style.display='none'"></div>
           <div class="cover-title" id="cover-title">Client<br><em>Report</em></div>
           <div class="cover-subtitle" id="cover-subtitle">Digital Marketing Monthly Performance Report</div>
           <div class="cover-meta-grid">
