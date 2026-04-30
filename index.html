@@ -443,7 +443,7 @@ td .di{font-size:10.5px;margin-left:4px}
     display:flex;align-items:center;justify-content:space-between;
     padding-top:10pt;border-top:1pt solid #e5e2dc;
   }
-  .cover-emg-logo{ height:.32in;opacity:.85;display:block }
+  .cover-emg-logo{ height:.7in;opacity:.85;display:block }
   .cover-footer-url{ font-size:7pt;color:#a8a29e }
 
   /* ── SLIDE SECTION HEADER ────────────────────────────────────────── */
@@ -696,7 +696,7 @@ td .di{font-size:10.5px;margin-left:4px}
         <div class="cover-sidebar"></div>
         <div class="cover-inner">
           <div class="cover-logo-wrap"><img id="cover-logo-img" src="" alt="" onerror="this.style.display='none'"></div>
-          <div class="cover-title" id="cover-title">Client<br><em>Report</em></div>
+          <div class="cover-title" id="cover-title" style="display:none"></div>
           <div class="cover-subtitle" id="cover-subtitle">Digital Marketing Monthly Performance Report</div>
           <div class="cover-meta-grid">
             <div class="cover-meta-item"><div class="k">Report Period</div><div class="v" id="cover-period">—</div></div>
@@ -1282,7 +1282,7 @@ function renderSlides(slides, locSlides) {
     // print header injected before slide content
     var psh=ce('div'); psh.className='print-section-header';
     var c=clients[+el('client-select').value];
-    psh.innerHTML='<div class="psh-label">'+d.label+'</div><div class="psh-period">'+(c&&c.fm.month||'')+'</div><img class="psh-emg-logo" src="logos/elysium.webp" alt="">';
+    psh.innerHTML='<div class="psh-label">'+d.label+'</div><div class="psh-period">'+(c&&c.fm.month||'')+'</div>';
     div.appendChild(psh);
     var rule=ce('div'); rule.className='psh-rule'; div.appendChild(rule);
     var pw=ce('div'); pw.className='print-page'; div.appendChild(pw);
