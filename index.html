@@ -605,8 +605,8 @@ td .di{font-size:10.5px;margin-left:4px}
   .comment-list li:only-child:empty::before{content:none!important}
 
   /* ── COVER LOGO ──────────────────────────────────────────────────── */
-  .cover-logo-wrap{display:block!important;position:static!important;max-height:.6in;margin-bottom:16pt}
-  .cover-logo-wrap img{max-height:100%;max-width:2in;object-fit:contain;display:block}
+  .cover-logo-wrap{display:block!important;position:static!important;margin-bottom:18pt;overflow:hidden}
+  .cover-logo-wrap img{max-height:.55in;max-width:2.2in;object-fit:contain;display:block}
 
   /* ── LOCATION CARDS ──────────────────────────────────────────────── */
   .loc-card-header{display:flex!important;align-items:center!important;padding:.25rem 0 .45rem!important;border-bottom:.5pt solid #e5e2dc!important;margin-bottom:.35rem!important}
@@ -627,7 +627,7 @@ td .di{font-size:10.5px;margin-left:4px}
 
   <!-- ── UPLOAD SCREEN ─────────────────────────────────────────────── -->
   <div id="upload-screen">
-    <div class="upload-logo"><img src="logos/elysium.webp" alt="Elysium Marketing Group" style="height:72px;opacity:.85"></div>
+    <div class="upload-logo"><img src="logos/elysium.webp" alt="Elysium Marketing Group" style="height:200px;opacity:.85"></div>
     <h1>Monthly<br><em>Report Dashboard</em></h1>
     <p>Connect your Drive folder to load reports, or drop files directly.</p>
 
@@ -1111,7 +1111,6 @@ function buildLocSlide(locSlides, container, slideId) {
         el('cover-title').innerHTML='<em>'+locName_+'</em>';
         el('cover-subtitle').textContent='Location Performance Report';
         el('cover-period').textContent=(c&&c.fm.month)||'—';
-        el('cover-client').textContent=locName_;
         var logoImg=el('cover-logo-img');
         var logoSlug=(c&&c.fm.client||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
         if (logoSlug) {
