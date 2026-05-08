@@ -335,6 +335,28 @@ td .di{font-size:10.5px;margin-left:4px}
 /* ── COVER PAGE (print) ───────────────────────────────────────────────── */
 #cover-page,.print-section-header,.psh-rule{display:none}
 
+/* ── SLIDE TITLE HEADER (screen) ─────────────────────────────────────── */
+.slide-hdr{
+  display:flex;align-items:baseline;gap:.75rem;
+  padding:.5rem .75rem .45rem;
+  border-bottom:2px solid var(--brand);
+  margin-bottom:1rem;
+}
+.slide-hdr-lbl{
+  font-size:1.05rem;font-weight:700;color:var(--text);
+  letter-spacing:-.01em;flex:1;
+}
+.slide-hdr-period{font-size:11px;color:var(--muted);font-weight:400}
+
+/* ── COMMENT PRINT PAGES (screen) ────────────────────────────────────── */
+.page-comments{
+  background:var(--paper);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1rem 1.25rem;
+  margin-bottom:1rem;
+}
+
 /* ══════════════════════════════════════════════════════════════════════
    PRINT STYLES  —  8.5 × 11 in, margins built into layout
 ══════════════════════════════════════════════════════════════════════ */
@@ -448,6 +470,7 @@ td .di{font-size:10.5px;margin-left:4px}
   .cover-footer-url{ font-size:7pt;color:#a8a29e }
 
   /* ── SLIDE SECTION HEADER ────────────────────────────────────────── */
+  .slide-hdr{ display:none!important }
   .print-section-header{
     display:flex!important;
     align-items:baseline;
@@ -456,14 +479,17 @@ td .di{font-size:10.5px;margin-left:4px}
     border-bottom:2pt solid var(--brand);
   }
   .psh-label{
-    font-family:'DM Serif Display',Georgia,serif!important;
-    font-size:22pt;color:#1c1917;flex:1;
-    letter-spacing:-.01em;
+    font-size:20pt;font-weight:700;color:#1c1917;flex:1;
+    letter-spacing:-.02em;
   }
   .psh-period{ font-size:9pt;color:#78716c;margin-left:10pt;font-weight:400 }
-  .psh-emg-logo{ height:22pt;margin-left:12pt;opacity:.7;display:block }
-  .psh-rule{
-    display:none;
+  .psh-emg-logo{ display:none!important }
+  .psh-rule{ display:none!important }
+
+  /* page break between consecutive print-pages within a slide */
+  .print-page + .print-page{
+    page-break-before:always;
+    break-before:page;
   }
 
   /* ── PRINT PAGE WRAPPER ──────────────────────────────────────────── */
@@ -598,17 +624,23 @@ td .di{font-size:10.5px;margin-left:4px}
   .ai-item .src{ font-size:7pt!important;margin-bottom:2pt!important }
   .ai-item .cnt{ font-size:12pt!important;font-weight:600!important }
 
-  /* ── COMMENT SECTIONS ────────────────────────────────────────────── */
-  .comment-section{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8pt!important;margin-top:10pt!important;break-inside:avoid}
-  .comment-block{background:#fff!important;border:1pt solid #e5e2dc!important;border-radius:3pt!important;padding:7pt 9pt!important;break-inside:avoid}
-  .comment-block-title{font-size:7.5pt!important;margin-bottom:4pt!important;padding-bottom:3pt!important}
-  .comment-list{padding-left:10pt!important;min-height:0!important}
-  .comment-list li{font-size:9pt!important;line-height:1.45!important;min-height:0!important}
+  /* ── COMMENT PAGES (summary / moving forward) ───────────────────── */
+  .page-comments{ background:#fff!important;border:none!important;padding:0!important;margin:0!important }
+  .comment-section{display:none!important}
+  .comment-block{background:#fff!important;border:none!important;padding:0!important;break-inside:avoid}
+  .comment-block-title{
+    font-size:9pt!important;font-weight:700!important;color:#78716c!important;
+    text-transform:uppercase!important;letter-spacing:.1em!important;
+    margin-bottom:12pt!important;padding-bottom:6pt!important;
+    border-bottom:1pt solid #e5e2dc!important;
+  }
+  .comment-list{padding-left:12pt!important;min-height:0!important}
+  .comment-list li{font-size:11pt!important;line-height:1.7!important;min-height:0!important}
   .comment-list li:only-child:empty::before{content:none!important}
 
   /* ── COVER LOGO ──────────────────────────────────────────────────── */
-  .cover-logo-wrap{display:block!important;position:static!important;margin-bottom:16pt;overflow:hidden}
-  .cover-logo-wrap img{max-height:.5in;max-width:2.4in;object-fit:contain;display:block}
+  .cover-logo-wrap{display:block!important;position:static!important;margin-bottom:18pt;overflow:hidden}
+  .cover-logo-wrap img{max-height:.85in;max-width:3.5in;object-fit:contain;display:block}
 
   /* ── LOCATION CARDS ──────────────────────────────────────────────── */
   .loc-card-header{display:flex!important;align-items:center!important;padding:.25rem 0 .45rem!important;border-bottom:.5pt solid #e5e2dc!important;margin-bottom:.35rem!important}
@@ -1279,18 +1311,14 @@ function buildPaidSlide(block, container, kwBlock) {
   }
 }
 
-// ── COMMENT SECTIONS ──────────────────────────────────────────────────────
-function buildCommentSection(container) {
-  var wrap = ce('div'); wrap.className = 'comment-section';
-  ['Summary','Moving Forward'].forEach(function(title) {
-    var block = ce('div'); block.className = 'comment-block';
-    var t = ce('div'); t.className = 'comment-block-title'; t.textContent = title;
-    var ul = ce('ul'); ul.className = 'comment-list'; ul.contentEditable = 'true'; ul.spellcheck = false;
-    var li = ce('li'); ul.appendChild(li);
-    block.appendChild(t); block.appendChild(ul);
-    wrap.appendChild(block);
-  });
-  container.appendChild(wrap);
+// ── COMMENT BLOCK ─────────────────────────────────────────────────────────
+function buildCommentBlock(title) {
+  var block = ce('div'); block.className = 'comment-block';
+  var t = ce('div'); t.className = 'comment-block-title'; t.textContent = title;
+  var ul = ce('ul'); ul.className = 'comment-list'; ul.contentEditable = 'true'; ul.spellcheck = false;
+  ul.appendChild(ce('li'));
+  block.appendChild(t); block.appendChild(ul);
+  return block;
 }
 
 // ── RENDER SLIDES ─────────────────────────────────────────────────────────
@@ -1308,24 +1336,57 @@ function renderSlides(slides, locSlides) {
   defs.forEach(function(d, i) {
     if (d.key==='__loc__' ? !locSlides.length : !slides[d.key]) return;
 
+    var c=clients[+el('client-select').value];
+    var month=(c&&c.fm.month)||'';
+
     var div=ce('div');
     div.className='slide'+(first?' active':'');
     div.id='sl'+i;
 
-    // print header injected before slide content
-    var psh=ce('div'); psh.className='print-section-header';
-    var c=clients[+el('client-select').value];
-    psh.innerHTML='<div class="psh-label">'+d.label+'</div><div class="psh-period">'+(c&&c.fm.month||'')+'</div>';
-    div.appendChild(psh);
-    var rule=ce('div'); rule.className='psh-rule'; div.appendChild(rule);
-    var pw=ce('div'); pw.className='print-page'; div.appendChild(pw);
+    // screen-visible editable slide title
+    var shdr=ce('div'); shdr.className='slide-hdr';
+    var slbl=ce('div'); slbl.className='slide-hdr-lbl'; slbl.textContent=d.label;
+    slbl.contentEditable='true'; slbl.spellcheck=false;
+    var sper=ce('div'); sper.className='slide-hdr-period'; sper.textContent=month;
+    shdr.appendChild(slbl); shdr.appendChild(sper);
+    div.appendChild(shdr);
 
-    if (d.key==='__loc__') buildLocSlide(locSlides,pw,div.id);
-    else d.fn(slides[d.key],pw,d.extra?slides[d.extra]:undefined);
+    // helper: print-page with embedded section header, synced to screen title
+    function makePrintPage(extraClass) {
+      var pg=ce('div'); pg.className='print-page'+(extraClass?' '+extraClass:'');
+      var psh=ce('div'); psh.className='print-section-header';
+      var lbl=ce('div'); lbl.className='psh-label'; lbl.textContent=slbl.textContent;
+      var per=ce('div'); per.className='psh-period'; per.textContent=month;
+      psh.appendChild(lbl); psh.appendChild(per);
+      var rule=ce('div'); rule.className='psh-rule';
+      pg.appendChild(psh); pg.appendChild(rule);
+      slbl.addEventListener('input',function(){ lbl.textContent=slbl.textContent; });
+      return pg;
+    }
 
-    if (!pw.children.length) return;
-    makeEditable(pw);
-    if (d.key!=='__loc__') buildCommentSection(pw);
+    // Summary page (print: own slide; screen: editable block above metrics)
+    if (d.key!=='__loc__') {
+      var pSummary=makePrintPage('page-comments');
+      pSummary.appendChild(buildCommentBlock('Summary'));
+      div.appendChild(pSummary);
+    }
+
+    // Metrics page
+    var pMetrics=makePrintPage('page-metrics');
+    var tempPw=ce('div');
+    if (d.key==='__loc__') buildLocSlide(locSlides,tempPw,div.id);
+    else d.fn(slides[d.key],tempPw,d.extra?slides[d.extra]:undefined);
+    if (!tempPw.children.length) return;
+    while(tempPw.firstChild) pMetrics.appendChild(tempPw.firstChild);
+    makeEditable(pMetrics);
+    div.appendChild(pMetrics);
+
+    // Moving Forward page (print: own slide; screen: editable block below metrics)
+    if (d.key!=='__loc__') {
+      var pMoving=makePrintPage('page-comments');
+      pMoving.appendChild(buildCommentBlock('Moving Forward'));
+      div.appendChild(pMoving);
+    }
 
     var tab=ce('button');
     tab.className='tab'+(first?' active':'');
