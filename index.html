@@ -326,6 +326,8 @@ td .di{font-size:10.5px;margin-left:4px}
 }
 .comment-list li{font-size:var(--fs);color:var(--text);line-height:1.6;min-height:1.2em}
 .comment-list li:only-child:empty::before{content:'Add notes…';color:var(--muted);opacity:.45;pointer-events:none}
+.comment-list ul{list-style:circle;padding-left:1.25rem}
+.comment-list ul ul{list-style:square}
 
 /* ── EDITABLE ─────────────────────────────────────────────────────────── */
 [contenteditable=true]{outline:none;border-radius:3px;cursor:text;transition:background .1s}
@@ -637,10 +639,12 @@ td .di{font-size:10.5px;margin-left:4px}
   .comment-list{padding-left:12pt!important;min-height:0!important}
   .comment-list li{font-size:11pt!important;line-height:1.7!important;min-height:0!important}
   .comment-list li:only-child:empty::before{content:none!important}
+  .comment-list ul{padding-left:12pt!important}
+  .comment-list ul li{font-size:10pt!important}
 
   /* ── COVER LOGO ──────────────────────────────────────────────────── */
   .cover-logo-wrap{display:block!important;position:static!important;margin-bottom:18pt;overflow:hidden}
-  .cover-logo-wrap img{max-height:.85in;max-width:3.5in;object-fit:contain;display:block}
+  .cover-logo-wrap img{max-height:1.5in;max-width:5in;object-fit:contain;display:block}
 
   /* ── LOCATION CARDS ──────────────────────────────────────────────── */
   .loc-card-header{display:flex!important;align-items:center!important;padding:.25rem 0 .45rem!important;border-bottom:.5pt solid #e5e2dc!important;margin-bottom:.35rem!important}
@@ -1317,6 +1321,12 @@ function buildCommentBlock(title) {
   var t = ce('div'); t.className = 'comment-block-title'; t.textContent = title;
   var ul = ce('ul'); ul.className = 'comment-list'; ul.contentEditable = 'true'; ul.spellcheck = false;
   ul.appendChild(ce('li'));
+  ul.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      document.execCommand(e.shiftKey ? 'outdent' : 'indent');
+    }
+  });
   block.appendChild(t); block.appendChild(ul);
   return block;
 }
@@ -1327,9 +1337,9 @@ function renderSlides(slides, locSlides) {
   el('slides').innerHTML='';
 
   var defs=[
-    {key:'SEO Overview',label:'SEO overview',fn:buildSEOSlide},
+    {key:'SEO Overview',label:'Organic Overview',fn:buildSEOSlide},
     {key:'__loc__',label:'Locations',fn:null},
-    {key:'Paid Search',label:'Paid search',fn:buildPaidSlide,extra:'Paid Search \u2014 Keywords'}
+    {key:'Paid Search',label:'Paid Search',fn:buildPaidSlide,extra:'Paid Search \u2014 Keywords'}
   ];
 
   var first=true;
