@@ -1141,12 +1141,17 @@ function buildLocSlide(locSlides, container, slideId) {
 
   var hasAds=locSlides.some(function(loc){ return extractLocCampaigns(loc.block).length>0; });
 
+  // The cards built into `container` get moved into the live slide (#slideId)
+  // by the caller, so toggles must query the live slide at click time —
+  // querying `container` (now emptied) would silently match nothing.
+  function locScope(){ return (slideId && document.getElementById(slideId)) || container; }
+
   container.appendChild(makePanel(SEO_COLS.map(function(c,j){
-    return {label:c,hide:function(h){container.querySelectorAll('.'+SEO_CLS[j]).forEach(function(e){e.style.display=h?'none':'';});}};
+    return {label:c,hide:function(h){locScope().querySelectorAll('.'+SEO_CLS[j]).forEach(function(e){e.style.display=h?'none':'';});}};
   }),'SEO Metrics'));
   if (hasAds) {
     container.appendChild(makePanel(ADS_COLS.map(function(c,j){
-      return {label:c,hide:function(h){container.querySelectorAll('.'+ADS_CLS[j]).forEach(function(e){e.style.display=h?'none':'';});}};
+      return {label:c,hide:function(h){locScope().querySelectorAll('.'+ADS_CLS[j]).forEach(function(e){e.style.display=h?'none':'';});}};
     }),'Ads Metrics'));
   }
 
